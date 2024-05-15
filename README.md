@@ -552,7 +552,7 @@ c3ng0@ubn:~$ kubectl create deployment nginx-depl --image=nginx
 deployment.apps/nginx-depl created
 ```
 
- * Nginx görüntüsünü, Docker Hub'dan indirecektir. Bu komutu yürütürsem, gördüğünüz gibi nginx deployment oluşturuldu.
+ * Nginx görüntüsünü, Docker Hub'dan indirecektir. Bu komutu yürüttüğümüz zaman, gördüğünüz gibi nginx deployment oluşturuldu.
 
 ```bash
 c3ng0@ubn:~$ kubevtl get deployment
@@ -586,7 +586,7 @@ nginx-depl-85c9d7c5f4-g4lwt   0/1     Creating  0          31s
  * Pod, bir konteynerin soyutlamasıdır.
  Deployment'tan aşağıdaki her şey otomatik olarak kubernetes tarafından yönetilmelidir.
 
-Örneğin, kullanıldığı image gibi bir şeyi doğrudan bir deployment içerisinde düzenlemem gerekecek, Pod içinde değil. Öyleyse hemen yapalım.
+Örneğin, kullanıldığı image gibi bir şeyi doğrudan bir deployment içerisinde düzenlememiz gerekecek, Pod içinde değil. Öyleyse hemen yapalım.
 
 ```python
 c3ng0@ubn:~$ kubectl edit deployment nginx-depl
