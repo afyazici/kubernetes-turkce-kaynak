@@ -20,7 +20,13 @@
 * Pod Kubernete's en küçük birimidir.
 * Konteyner üzerinde sanallaştırma yapar. (abstraction)
 
-![ResimAçıklaması](images/Pasted image 20240513120708.png)
+![ResimAçıklaması](images/pod.png)
+![ResimAçıklaması](pod.png)
+![pod.png](pod.png)
+![[pod.png]](pod.png)
+![ResimAçıklaması](images/pod.png)
+![pod.png](images/pod.png)
+![[pod.png]](images/pod.png)
 
 * Yalnızca Kubernetes katmanıyla etkileşime geçeriz.
 * Bir pod içinde birden fazla konteyner çalıştırabilirsiniz, ancak genellikle bir pod başına bir uygulama bulunur.
