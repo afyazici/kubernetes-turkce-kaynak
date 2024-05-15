@@ -20,13 +20,8 @@
 * Pod Kubernete's en küçük birimidir.
 * Konteyner üzerinde sanallaştırma yapar. (abstraction)
 
-![ResimAçıklaması](images/pod.png)
-![ResimAçıklaması](pod.png)
-![pod.png](pod.png)
-![[pod.png]](pod.png)
-![ResimAçıklaması](images/pod.png)
-![pod.png](images/pod.png)
-![[pod.png]](images/pod.png)
+![](images/1.png)
+
 
 * Yalnızca Kubernetes katmanıyla etkileşime geçeriz.
 * Bir pod içinde birden fazla konteyner çalıştırabilirsiniz, ancak genellikle bir pod başına bir uygulama bulunur.
@@ -36,57 +31,57 @@
 
 * Service, her bir pod'a bağlanabilen sabit bir IP adresidir. Uygulamamızın kendi `service`'i olacak ve veritabanı pod'u kendi `service`'ine sahip olacak. Buradaki güzel şey, servis ve Pod'un yaşam döngüleri birbirine bağlı değil, bu yüzden Pod ölse bile `Service` ve IP adresi kalır. Artık endpoint'i değiştirmemize gerek yoktur.
 
-![[Pasted image 20240513121950.png]]
+![](images/2.png)
 
 * Tabii ki, uygulamamızın bir tarayıcı aracılığıyla erişilebilir olmasını isteriz değil mi? Bunun için bir `external service` oluşturmamız gerekir. `External Service`, dış kaynaklardan iletişimi açan bir servistir. Ancak, veritabanımızı halka açık isteklere açmak istemeyiz. Bunun için `Internal Service` adını verdiğimiz bir şey oluştururuz.
 
-![[Pasted image 20240513122233.png]]
+![](images/3.png)
 
 * External Service URL'sinin çok pratik olmadığını fark ettiniz mi? Temelde, bir HTTP protokolüyle bir node IP adresi ve service port numarasına sahibiz. Bu hızlı bir şekilde bir şeyleri test etmek istiyorsak iyidir, ancak end-product için iyi değildir. Genellikle, uygulamamızla güvenli bir protokol ve bir alan adı kullanmak isteriz.
 
-![[Pasted image 20240513122708.png]]
+![](images/4.png)
 
 Bunun için Kubernetes'in başka bir bileşeni olan `Ingress` var. Bu şekilde, istek önce service'e değil, Ingress'e gider ve oradan Service'e yönlendirilir.
 
-![[Pasted image 20240513122829.png]]
+![](images/5.png)
 
 * Şimdi, Kubernetes'in çok temel bileşenlerini gördük ve gördüğünüz gibi, bu çok basit bir kurulum, sadece bir sunucu ve birkaç konteyner çalıştırıyoruz ve bazı component'ler var.
 ### ConfigMap and Secret
 
 Yani, pod'lar birbirleriyle `service` aracılığıyla iletişim kurar. Uygulamamızın, veritabanı ile iletişim kurmak için kullandığı bir database endpoint `örneğin mongodb service`'i olacak. Ancak bu veritabanı URL'sini (ya da endpoint) genellikle nerede yapılandırırız?
 
-![[Pasted image 20240513131853.png]]
+![](images/6.png)
 
 Genellikle bunu application properties file veya bazı external environmental variable olarak yaparız, ancak genellikle yapılandırma,uygulamanın içerisindeki built image'tedir.
 
 Örneğin, service endpoint (ya da service name) 'mongodb' olarak değişirse, uygulamadaki bu URL'yi ayarlamalıyız. Genellikle yeni bir sürümle uygulamayı rebuild etmemiz ve repoya pushlamamız gerekir. Ardından bu yeni image'i pod'umuzda pull'layıp tüm uygulamayı yeniden başlatmamız gerekebilir.
 
-![[Pasted image 20240513132131.png]]
+![](images/7.png)
 
 Yani, veritabanı URL'si gibi küçük bir değişiklik için bu gerçekten zahmetli. Bu sebeple, Kubernetes'in `configmap` adında bir bileşeni var. Yapısı, uygulamamıza `external configuration` sağlar. ConfigMap genellikle kullandığımız veritabanı URL'leri gibi yapılandırma verilerini içerir. Kubernetes'te bunu Pod'a bağlarız. Pod, ConfigMap'in içerdiği verileri alır. Ve şimdi, service adını değiştirirsek (service end point), sadece ConfigMap'i ayarlarız ve bu yeterli olacaktır. Yeni bir image oluşturmamıza ve tüm döngüyü geçirmemize gerek yoktur. Büyük avantaj!
 
-![[Pasted image 20240513132703.png]]
+![](images/8.png)
 
 Şimdi, external configuration bir parçası aynı zamanda database kullanıcı adı ve şifresi olabilir değil mi? Bu da uygulama dağıtım sürecinde değişebilir. Ancak, bir şifreyi veya diğer kimlik bilgilerini düz metin formatında bir configmap'e koymamız güvensiz olurdu.
 
-![[Pasted image 20240513132820.png]]
+![](images/9.png)
 
 Bu amaçla, Kubernetes'in `Secret` adında başka bir bileşeni vardır. Yani, Secret, ConfigMap gibi, ancak fark şu ki; şifre gibi gizli verileri saklamak için kullanılır. Ve tabii ki, düz metin formatında değil, base64 formatında kodlanmış olarak saklanır. Yani, Secret, kullanıcı adları gibi kimlik bilgilerini içerecek ve tabii ki, veritabanı kullanıcılarını içerecektir. ConfigMap'e de koyabiliriz, ancak önemli olan şifreler, sertifikalar, başkalarının erişimini istemediğimiz şeyler Secret'e girer. Aynı ConfigMap gibi, sadece Pod'umuza bağlarız, böylece Pod bu verileri görebilir ve Secret'ten okuyabilir. ConfigMap veya Secret'ten verileri, örneğin environment variables olarak veya hatta bir özellikler dosyası olarak uygulamamızın içinde kullanabiliriz.
 
-![[Pasted image 20240513133206.png]]
+![](images/10.png)
 
 Aslında en çok kullanılan Kubernetes temel bileşenlerinin neredeyse tamamını gördük. Pod'a göz attık. Hizmetlerin nasıl kullanıldığını, Ingress bileşeninin ne işe yaradığını gördük ve ayrıca ConfigMap ve Secrets'ı kullanan harici yapılandırmayı da gördük.
 
-![[Pasted image 20240513133313.png]]
+![](images/11.png)
 
 ### Volumes
 Şimdi genel olarak çok önemli bir kavramı inceleyelim, bu da ==veri depolama== ve Kubernetes içerisinde nasıl çalıştığıdır. Yani, uygulamamızın kullandığı bir database partımız var ve bir miktar verimiz var. Şu anda gördüğünüz bu kurulumla, eğer veritabanı container veya pod'u yeniden başlatılırsa, veri kaybolur. Ve bu açıkça sorunlu ve elverişsizdir, çünkü database'deki verilerinizin veya günlük verilerinizin uzun süreli güvenilir bir şekilde kalıcı olmasını istersiniz. Ve bunu Kubernetes'te yapmanın yolu, Kubernetes'in başka bir bileşeni olan `Volumes` kullanmaktır.
 
-![[Pasted image 20240513133558.png]]
+![](images/12.png)
 
 Ve şu şekilde çalışır: Temelde bir fiziksel depolama birimini, yani bir sabit diski, pod'unuza bağlar. Ve bu depolama ya yerel bir makinede olabilir, yani pod'un çalıştığı aynı sunucu node'unda olabilir, ya da Kubernetes kümesinin dışında anlamına gelen uzak bir depolama olabilir. Bulut depolama olabilir veya Kubernetes kümesinin bir parçası olmayan kendi yerleşke depolamanız olabilir, bu yüzden bununla ilgili external reference var.
 
-![[Pasted image 20240513133649.png]]
+![](images/13.png)
 
 Böylece, database pod'u veya caontainer yeniden başlatıldığında, tüm veri kalıcı bir şekilde saklanmış olacaktır.
 
@@ -96,7 +91,7 @@ Kubernetes kümesi ve tüm bileşenlerinin ve depolama arasındaki farkı anlama
 
 Şimdi, her şey mükemmel bir şekilde çalışıyor ve bir kullanıcı bir tarayıcı aracılığıyla uygulamaya erişebiliyor. Şimdi, bu kurulumla, application pod'u ölürse, crashlerse veya yeni bir container image oluşturduğum için pod'u restart etmem gerekiyorsa ne olurdu? Basically, bir kullanıcının uygulamama ulaşamadığı bir süre olan bir kesintim olurdu, bu da end product'ta gerçekleşirse çok kötü bir durumdur.
 
-![[Pasted image 20240513134616.png]]
+![](images/14.png)
 
 Ve bu, distributed systems ve containers avantajı tam olarak budur. Yani, yalnızca 1 application pod'u ve 1 database pod'u gibi bir şeye güvenmek yerine, her şeyi birden fazla sunucuda replikasını oluşturuyoruz. Yani, uygulamamızın bir klonu veya çoğaltması çalışacağı başka bir node olacak ve bu da service'e bağlı olacak. Hatırlarsanız önceki olarak service'in, bir pod öldüğünde end point'i sürekli ayarlamamıza gerek olmadığı için bir kalıcı statik IP adresi ve bir DNS adı gibi olduğunu söylemiştik.
 
@@ -105,25 +100,25 @@ Ve bu, distributed systems ve containers avantajı tam olarak budur. Yani, yaln�
 
 Ancak application pod'unun ikinci replikasını oluşturmak için ikinci bir pod oluşturmazsınız, bunun yerine uygulama pod'unun bir blueprint'ini tanımlar ve o pod'un kaç tane replikasını çalıştırmak istediğinizi belirtirsiniz. Ve bu component veya blueprint'e `deployment` denir, bu da Kubernetes'in başka bir componentidir. Pratikte, pod'larla çalışmazsınız veya pod'lar oluşturmazsınız; çünkü orada kaç tane replika belirtebilir ve ihtiyacınız olan pod'ların replika sayısını artırabilir veya azaltabilirsiniz. Yani pod, container'ların üzerinde bir layer of abstraction ve deployment, podların üzerinde başka bir layer of abstraction, bu da pod'larla etkileşimi, kopyalama ve diğer yapılandırmaları daha kullanışlı hale getirir.
 
-![[Pasted image 20240513134846.png]]
+![](images/15.png)
 
 Yani pratikte, çoğunlukla pod'larla değil, deployment'larla çalışırsınız. Yani şimdi, uygulama pod'unuzun replikalarından biri ölürse, service istekleri başkasına yönlendirilecektir, bu yüzden uygulamanız kullanıcılar için hala erişilebilir olacaktır.
 
-![[Pasted image 20240513134952.png]]
+![](images/16.png)
 
 Şimdi muhtemelen şunu merak ediyorsunuzdur, peki database pod'u ne olacak? Çünkü eğer database pod'u ölürse, uygulamanız da erişilemez olacaktır. Bu yüzden, bir database replikasına da ihtiyacımız var. Ancak, _==bir `deployment` kullanarak bir databese'i kopyalayamayız==_. Bunun nedeni, database'in bir state'i olmasıdır, yani veridir. Bu da demektir ki eğer database'in replikaları veya klonları olsaydı, hepsi aynı paylaşılan data storage volume'üne erişmek zorunda kalacaklardı. Ve burada, hangi pod'ların şu anda depolama birimine yazdığını veya hangi pod'ların depolama biriminden okuduğunu yöneten bir mekanizmaya ihtiyacınız olacaktı. Bu mekanizma, çoğaltma özelliklerinin yanı sıra sunan başka bir Kubernetes bileşeni olan `StatefulSet` ile sağlanır.
 
-![[Pasted image 20240513135138.png]]
+![](images/17.png)
 
 Bu bileşen özellikle database gibi uygulamalar için tasarlanmıştır. Yani, MySQL, MongoDB, Elasticsearch veya herhangi bir diğer stateful applications veya databases, deployments yerine Stateful Sets kullanılarak oluşturulmalıdır. Bu çok önemli bir ayrımdır. Ve StatefulSet, aynı deployment gibi, pod'ları replikalamayı ve bunları scaling'e alır ancak database reading ve writing işlemlerinin senkronize olduğundan emin olur, böylece database tutarsızlıkları olmaz.
 
-![[Pasted image 20240513135252.png]]
+![](images/18.png)
 
 Ancak, bir Kubernetes kümesinde StatefulSets kullanarak database uygulamalarını deploy etmek biraz zahmetli olabilir. Bu yüzden, database uygulamalarını Kubernetes kümesinin dışında barındırmak ve yalnızca dağıtımları veya durumsuz uygulamaları Kubernetes kümesinin içinde sorunsuz bir şekilde çoğaltmak ve ölçeklendirmek ve dış database ile iletişim kurmak yaygın bir uygulamadır.
 
 Şimdi, uygulama pod'umun iki replikası ve database'in iki kopyası olduğunda ve hepsi load-balanced olduğunda, kurulumumuz daha güvenlidir. Bu, eğer Node 1(whole node1), yeniden başlatılsaydı veya çökseydi ve üzerinde hiçbir şey çalışamaz hale gelse bile, hala uygulama ve database pod'larının çalıştığı ikinci bir node'umuz olurdu. Uygulama, bu iki replikadan yeniden oluşturulana kadar kullanıcı tarafından erişilebilir olacaktır, bu yüzden kesintiyi önleyebilirsiniz.
 
-![[Pasted image 20240513135559.png]]
+![](images/19.png)
 
 Özetlemek gerekirse, en çok kullanılan Kubernetes bileşenlerini inceledik. Parçalar arasında iletişim kurmak için `pod`lar ve `service`lerle başladık, ve trafiği clusterlara yönlendirmek için kullanılan `Ingress` bileşenini inceledik. Ayrıca, `ConfigMaps` ve `Secret` kullanarak external configuration, ve `Volumes` kullanarak veri kalıcılığını inceledik. Ve son olarak, `Deployments` ve `StatefulSets` gibi replicating ve blueprintlere baktık, burada stateful applications özellikle databases gibi stateful applications için kullanılır. Ve evet, Kubernetes'in sunduğu çok daha fazla bileşen var, ama bunlar gerçekten çekirdek, temel olanlar. Bu temel bileşenleri kullanarak oldukça güçlü Kubernetes kümesi oluşturabilirsiniz.
 
@@ -158,7 +153,7 @@ Hizmetlerden pod'lara istekleri iletmekten sorumlu üçüncü süreç aslında `
 
 Özetlemek gerekirse; bir kubernetes cluster'ının düzgün çalışabilmesi için `kubelet` ve `kube-proxy` her worker node  içerisine `container runtime` ile birlikte kurulmalıdır.
 
-![[Pasted image 20240513142511.png]]
+![](images/20.png)
 
 Ancak şimdi soru şu: Bu cluster ile nasıl interact? Yeni bir application pod'u veya database pod'u nerede schedule edilmeli? Bir replika pod'u ölürse, hangi process monitors ve reschedules veya restarts?
 ### Master Node
@@ -169,11 +164,11 @@ Yani, Master servers veya master nodes içerisinde tamamen farklı processler ç
 
 İlk hizmet API server. Bİr Kubernetes cluster'ında yeni bir application deploy etmek istediğinizde, bir kullanıcı olarak API server ile interact edersiniz. Bir Kubernetes Dashboard gibi bir kullanıcı arayüzü olabilir, `kubectl` gibi bir command-line tool veya bir Kubernetes API'si olabilir. Yani, API sunucusu, cluster içine herhangi bir güncelleme talebinin veya hatta kümeden gelen sorguların ilk isteğini alır. Ve yalnızca kimlik doğrulaması(auth) yaparak, yalnızca kimlik doğrulanmış ve yetkilendirilmiş isteklerin kümelere iletilmesini sağlar.
 
-![[Pasted image 20240513143034.png]]
+![](images/21.png)
 
 Bu, yeni pod'lar planlamak, yeni applications deploy etmek, yeni create new services veya herhangi bir components oluşturmak istediğinizde, isteğinizi master node API sunucusuna iletmek zorunda olduğunuz anlamına gelir. API server daha sonra requestinizi doğrular. Ve her şey yolundaysa, isteğinizi diğer süreçlere ileterek istediğiniz pod'u veya bileşeni schedule için bir node'a yönlendirir.
 
-![[Pasted image 20240513143117.png]]
+![](images/22.png)
 
 Ayrıca, dağıtımınızın durumu veya cluster health etc., gibi sorgu isteklerini yapmak isterseniz, API sunucusuna bir istek gönderir ve o da size yanıt verir, bu da güvenlik açısından iyidir çünkü clusterlara yalnızca `one entry point` vardır.
 
@@ -185,29 +180,29 @@ Ve tabii ki, herhangi bir node'u rastgele atamak yerine, Scheduler, bir sonraki 
 
 Ve sonra, worker nodes'daki kullanılabilir kaynakları kontrol eder. Eğer bir node'un en çok kaynağa sahip olduğunu söylüyorsa, yeni pod'u o node'a planlar.
 
-![[Pasted image 20240513144801.png]]
+![](images/23.png)
 
 Önemli bir nokta şu ki, scheduler sadece yeni bir pod'un hangi düğüme planlanacağına karar verir. Asıl planlamayı yapan ve pod'u konteyner ile başlatan işlem ise `kubelet`'tir. Yani kubelet, scheduler'dan gelen isteği alır ve bu isteği ilgili node üzerinde yürütür.
 #### 3) Controller Manager
 
 Bir sonraki önemli bileşen ise `controller manager`'dır. Bu bileşen, herhangi bir düğümde pod'lar öldüğünde ne olacağı sorusu açısından kritik öneme sahiptir. Ölü node'ları tespit etmek ve daha sonra bu pod'ları en kısa sürede reschedule etmek gerekir.
 
-![[Pasted image 20240513162043.png]]
+![](images/24.png)
 
 Dolayısıyla controller manager, state changes'ları, örneğin pod'ların çökmesini tespit eder. Pod'lar öldüğünde controller manager bunu algılar ve cluster state'ini mümkün olan en kısa sürede kurtarmaya çalışır.
 
 Bu amaçla, ölen pod'ları yeniden schedule için scheduler'a bir istek gönderir. Bu döngü içinde, scheduler kaynak hesaplamasına göre hangi worker node'ların bu pod'ları tekrar başlatması gerektiğine karar verir ve bu worker node'Lar üzerindeki ilgili `kubelet`lere aslında pod'ları yeniden başlatmaları için istek gönderir.
 
-![[Pasted image 20240513162141.png]]
+![](images/25.png)
 
 #### 4) Etcd
 Son olarak, ana işlemlerden biri olan etcd, bir cluster state'inin key-value deposudur. Bunu aslında bir cluster beyni olarak düşünebilirsiniz. Yani cluster'daki her değişiklik, örneğin yeni bir pod schedule edildiğinde veya bir pod öldüğünde, tüm bu değişiklikler etcd'nin bu key-value deposunda kaydedilir veya güncellenir.
 
-![[Pasted image 20240513162229.png]]
+![](images/26.png)
 
 Etcd deposunun bir küme beyni olarak adlandırılmasının sebebi, scheduler, controller manager gibi tüm bu mekanizmaların, etcd'nin sahip olduğu veriler sayesinde çalışmasıdır.
 
-![[Pasted image 20240513162301.png]]
+![](images/27.png)
 
 Örneğin, scheduler her bir worker node'unda hangi kaynakların mevcut olduğunu nasıl bilir? Veya controller manager, cluster durumunda bir değişiklik olduğunu nasıl tespit eder?
 
@@ -217,7 +212,7 @@ Tüm bu bilgiler etcd kümesinde saklanır. Etcd'nin key-value deposunda saklanm
 
 Artık muhtemelen ana işlemlerin, özellikle de verileri güvenilir bir şekilde saklanması veya çoğaltılması gereken etcd deposunun, cluster operasyonu için kritik öneme sahip olduğunu anlamışsınızdır. Bu nedenle, uygulamada bir Kubernetes kümesi genellikle birden fazla master'dan oluşur. Her bir master düğümü kendi ana işlemlerini çalıştırır; elbette API sunucusu load-balanced'dır ve etcd deposu tüm master düğümleri arasında distributed bir depolama oluşturur.
 
-![[Pasted image 20240513162454.png]]
+![](images/28.png)
 
 
 
@@ -226,13 +221,13 @@ Artık muhtemelen ana işlemlerin, özellikle de verileri güvenilir bir şekild
 
 Şimdi worker ve master node'larında çalışan işlemleri gördükten sonra, gerçek hayattaki bir cluster kurulumuna bakalım. Çok küçük bir cluster'da muhtemelen iki master node ve üç worker node olur.
 
-![[Pasted image 20240513162534.png]]
+![](images/29.png)
 
 Burada dikkat edilmesi gereken bir diğer nokta ise master node sunucularının donanım kaynaklarının aslında farklı olmasıdır. Master işlemleri daha önemlidir, ancak aslında daha az iş yüküne sahiptirler. Dolayısıyla CPU, RAM ve depolama gibi daha az kaynağa ihtiyaç duyarlar. Worker node'ları ise, containerları çalıştıran pod'ları barındırma gibi asıl işi yaparlar.
 
 Bu nedenle, worker node'larının daha fazla kaynağa ihtiyacı vardır. Uygulamanızın karmaşıklığı ve kaynak gereksinimi arttıkça, aslında cluster'ınıza daha fazla master ve worker node'u ekleyerek daha güçlü ve sağlam bir küme oluşturabilirsiniz. Böylece uygulama kaynak gereksinimlerinizi karşılayabilirsiniz.
 
-![[Pasted image 20240513162636.png]]
+![](images/30.png)
 
 Var olan bir Kubernetes cluster'ında yeni master veya worker serverları eklemek aslında oldukça kolaydır. Bir master sunucusu eklemek istiyorsanız, yeni bir bare metal sunucu edinin, üzerine tüm master işlemlerini kurun ve onu Kubernetes kümesine ekleyin.
 
@@ -247,11 +242,11 @@ Bu şekilde, uygulama karmaşıklığı ve kaynak gereksinimi arttıkça, Kubern
 
 #### 1) Minikube
 
-![[Pasted image 20240514103220.png]]
+![](images/31.png)
 
 Genellikle Kubernetes dünyasında bir production cluster kurduğunuzda, aşağıdaki gibi görünecektir.
 
-![[Pasted image 20240514104115.png]]
+![](images/32.png)
 
 En az iki olmak üzere birden fazla Master'a sahip olacaksınız ve birden fazla worker node olacak. Worker düğümlerinin kendi ayrı sorumlulukları vardır. Diyagramda gördüğünüz gibi, her biri bir düğümü temsil eden gerçek ayrı sanal veya fiziksel makineleriniz olur.
 
@@ -259,13 +254,13 @@ En az iki olmak üzere birden fazla Master'a sahip olacaksınız ve birden fazla
 
 Minikube'un ne olduğuna gelince, temelde hem master processleri hem de worker processleri tek bir node'da çalıştıran tek node bir clusterdır. Bu node'da önceden yüklenmiş bir Docker container runtime olacak şekilde konteynerleri veya konteynerli pod'ları çalıştırabileceksiniz.
 
-![[Pasted image 20240514104516.png]]
+![](images/33.png)
 
 Dizüstü bilgisayarınızda VirtualBox veya başka bir hipervizör aracılığıyla çalışacak. Yani temel olarak, Minikube dizüstü bilgisayarınızda bir VirtualBox oluşturacak ve burada gördüğünüz düğümler bu VirtualBox'ta çalışacak.
 
 Özetlemek gerekirse, Minikube, yerel kurulumunuzda Kubernetes'i test etmek için kullanabileceğiniz dizüstü bilgisayarınızda bir VirtualBox'ta çalışan tek node bir Kubernetes clusterdır.
 
-![[Pasted image 20240514104631.png]]
+![](images/34.png)
 
 Dizüstü bilgisayarınızda veya PC'nizde yerel makinenizde bir küme veya mini küme kurduktan sonra, kümeyle etkileşim kurmak için bir yola ihtiyacınız vardır. Bileşenler oluşturmak, yapılandırmak vb. isteyeceksiniz ve işte `kubectl` devreye giriyor.
 
@@ -275,11 +270,11 @@ local makinenizde Minikube'u temsil eden bu virtual node'a sahip olduktan sonra,
 
 Peki nasıl çalıştığını görelim. Minikube'un hem master hem de worker processleri çalıştırdığını söylemiştik, bu nedenle API server adı verilen master processlerden biri aslında Kubernetes clusterın entry point noktasıdır.
 
-![[Pasted image 20240514105107.png]]
+![](images/35.png)
 
 Kubernetes'te bir şey yapmak istiyorsanız, herhangi bir şeyi yapılandırmak istiyorsanız, önce API sunucusuyla konuşmanız gerekir. API sunucusuyla konuşmanın yolu ise farklı istemciler aracılığıyla olur. Bir pano gibi bir UI arayüzünüz olabilir, Kubernetes API'sini kullanarak konuşabilir veya `kubectl` komut satırı aracını kullanabilirsiniz.
 
-![[Pasted image 20240514105214.png]]
+![](images/36.png)
 
 `kubectl` aslında üç istemcinin de en güçlüsüdür çünkü `kubectl` ile Kubernetes'te istediğiniz her şeyi yapabilirsiniz.
 
@@ -287,7 +282,7 @@ Bu video eğitimleri boyunca çoğunlukla `kubectl` kullanacağız. `kubectl` AP
 
 Bu, Minikube çalışma şeklidir. `kubectl` cluster ile nasıl kullanılır? Burada önemli bir nokta, `kubectl`'nin yalnızca Minikube cluster için olmadığıdır. Bir cloud cluster'ınız veya hibrit bir cluster'ınız varsa, ne olursa olsun, `kubectl` herhangi bir Kubernetes kümesi kurulumuyla etkileşim kurmak için kullanılan araçtır. Bu nedenle burada unutulmaması önemlidir.
 
-![[Pasted image 20240514105528.png]]
+![](images/37.png)
 
 Artık Minikube ve `kubectl`'nin ne olduğunu bildiğimize göre, onları pratikte görmek için gerçekten kuralım.
 
@@ -370,7 +365,7 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version --client
 ```
 
-![[Pasted image 20240514114517.png]]
+![](images/38.png)
 
 daha fazlası için [kubernetes.io](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 
@@ -396,7 +391,7 @@ Burada, kurulu hipervizörün devreye girdiğini görebilirsiniz çünkü Miniku
 
 Bunu yürüttüğümde bir şeyler indirecek, yani ilk kez yapıyorsanız biraz daha uzun sürebilir.
 
-![[Pasted image 20240514115403.png]]
+![](images/39.png)
 
 Ve bahsettiğim gibi, Minikube'un Docker çalışma zamanı veya Docker Daemon önceden yüklü, bu yüzden makinenizde Docker yoksa bile çalışacak. Yani, Docker zaten yüklü olduğundan, içinde konteynerler oluşturabilirsiniz ki bu, Docker'ın zaten yüklü olmadığı bir durumda oldukça iyi bir özelliktir.
 
@@ -404,7 +399,7 @@ Ve bahsettiğim gibi, Minikube'un Docker çalışma zamanı veya Docker Daemon �
 
 Tamamlandı. Artık `kubectl`, Minikube'u kullanacak şekilde yapılandırılmış durumda, bu da Minikube cluster'ının kurulduğu anlamına gelir.
 
-![[Pasted image 20240514115443.png]]
+![](images/40.png)
 
 Kubernetes Kümesi ile etkileşimde bulunmak için tasarlanmış olan `kubectl` komutu da o Minikube kümesi ile bağlantılıdır, bu da eğer şunu yaparsam:
 
@@ -414,7 +409,7 @@ kubectl get nodes
 
 Bu, Kubernetes kümesinin düğümlerinin durumunu bana bildirir, bana bir Minikube node'unun hazır olduğunu söyleyecek ve gördüğünüz gibi açıkça master processleri çalıştırmalı çünkü sadece bir node var.
 
-![[Pasted image 20240514115707.png]]
+![](images/41.png)
 
 Ve ayrıca Minikube'ın durumunu alabilirim:
 
@@ -422,7 +417,7 @@ Ve ayrıca Minikube'ın durumunu alabilirim:
 minikube status
 ```
 
-![[Pasted image 20240514115740.png]]
+![](images/42.png)
 
 Yani, ana makinede kubelet adlı bir hizmetin çalıştığını görüyorum, bu da aslında konteyner çalışma zamanını kullanarak pod'ları çalıştıran bir hizmettir, yani temelde her şey çalışıyor.
 
@@ -515,7 +510,7 @@ nginx-depl-85c9d7c5f4-g4lwt   0/1     Creating  0          31s
 
  * Bir deployment oluşturduğumda, deployment, Pod oluşturmak için gereken tüm bilgilere veya blueprintlere sahiptir.
 
- ![[Pasted image 20240514144046.png]]
+![](images/43.png)
 
  * Bu en temel yapılandırmadır, sadece adı ve görüntüsü bu kadar, geri kalanı default.
 
@@ -575,17 +570,17 @@ Deployment oluştururken verdiğimiz iki seçenek dışında her şeyin otomatik
 
 Ve gördüğünüz gibi dağıtım düzenlendi.
 
-![[Pasted image 20240515115843.png]]
+![](images/44.png)
 
 Şimdi `kubectl get pod` yaparsam , eski pod'umu görürüm.
 
-![[Pasted image 20240515120058.png]]
+![](images/45.png)
 
 * Eski Pod sona erdi ve yeni pod başladı.
 
 Eğer ReplicaSet'i görüntülersem, eski olanın içinde pod olmadığını ve yeni bir tane oluşturulduğunu görüyorum.
 
-![[Pasted image 20240515120232.png]]
+![](images/46.png)
 
 Yani sonuç olarak deployment yapılandırmasını düzenledik ve altındaki her şey otomatik olarak güncellendi. Bu yaptığımız, Kubernetes'in sihrine ve nasıl çalıştığına bir örnektir.
 
@@ -601,18 +596,18 @@ kubectl logs [POD_NAME]
 
 Logları görüntülemeden önce Nginx hiçbir şey kaydetmediği için başka bir dağıtım oluşturalım. Mongodb'den oluşturalım ve adına `mongo-depl` verelim.
 
-![[Pasted image 20240515120734.png]]
+![](images/47.png)
 
 Şimdi mongodb deployment oluşturuluyor.
 
-![[Pasted image 20240515120827.png]]
+![](images/48.png)
 
 Şu anda loglara bakabiliriz:
 
-![[Pasted image 20240515121009.png]]
+![](images/49.png)
 
 * `kubectl describe pod [POD_NAME]` events sekmesinde bize state değişikliklerini verir.
-![[Pasted image 20240515121243.png]]
+![](images/50.png)
 
 Loglamak, uygulamanın gerçekte neyi yazdığını görmede ve hata ayıklamada yardımcı olmaktadır.
 
@@ -623,7 +618,7 @@ kubectl exec -it [POD_NAME] -- bin/bash
 ```
 * -it = **interactive terminal**
 
-![[Pasted image 20240515122018.png]]
+![](images/51.png)
 
 Bu komutla mongodb uygulama konteynerinin terminalini alıyoruz ve şu anda root kullanıcısı olarak mongodb konteynerinin içindeyiz.
 Exec, hata ayıklama veya bir şeyleri test etmek veya denemek istediğinizde kullanışlıdır. Konteynıra girebilir veya terminali alabilir ve orada bazı komutlar çalıştırabilirsiniz.
@@ -635,13 +630,13 @@ Exec, hata ayıklama veya bir şeyleri test etmek veya denemek istediğinizde ku
 Tabii ki Cube CTL ile potları silebilirim,
 Önce deployment'ları ve podları görüntüleyelim.
 
-![[Pasted image 20240515122607.png]]
+![](images/52.png)
 
 ```
 kubectl delete deployment [deployment_name]
 ```
 
-![[Pasted image 20240515125703.png]]
+![](images/53.png)
 
 kontrol ederseniz Pod'un sonlandığını ve eğer replica set alırsanız, mongodb replicasetinin de gittiğini görebilirsiniz.
 
@@ -726,21 +721,21 @@ spec:            ## specification for deployment
 
 Bu, bizim config  dosyamız ve buna bir kere sahip olduktan sonra, bu yapılandırmayı istediğimiz zaman uygulayabiliriz.
 
-![[Pasted image 20240515132127.png]]
+![](images/54.png)
 
 Deployment oluşturuldu, şimdi podu görüntülersem, nginx dağıtımı podu oluşturuldu ve çalışıyor olduğunu görürüz.
 
-![[Pasted image 20240515132524.png]]
+![](images/55.png)
 
 Ayrıca dağıtımın 3 dakika 57 saniye önce oluşturulduğunu görüyorum. Eğer bu deployment'ta bir şeyleri değiştirmek istersem, sadece yerel yapılandırmamı değiştirmem yeterlidir. Örneğin, bir yerine iki replika istersek bunu tekrar uygulayabilirim ve deployment nginx dağıtımı olarak tekrar yapılandırılacaktır.
 
-![[Pasted image 20240515132715.png]]
+![](images/56.png)
 
-![[Pasted image 20240515132850.png]]
+![](images/57.png)
 
 Fark ettiyseniz çıktıda bize "configured" dendi. Fark şu ki, Kubernetes, nginx deployment'ının var olmadığını algılarsa, yeni bir tane oluşturacak, ancak eğer deployment zaten varsa, yapılandırma dosyasını uyguladığımızd, onu güncellemesi gerektiğini bilecek ve yeni bir deployment oluşturmak yerine eski deployment'ı cofigure edecek.
 
-![[Pasted image 20240515133106.png]]
+![](images/58.png)
 
 Eski deployment hala ayakta (9m45s) fakat yeni bir replika oluşturuldu(3m22s) çünkü replika sayısını arttırdık. yani `kubectl apply` ile bir component oluşturabilir ve güncelleyebilirsiniz. Elbette Services, Volumes gibi diğer kubernetes bileşenlerine de ayar çekebilirsiniz.
 
