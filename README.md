@@ -4,7 +4,7 @@
 
 Bu yazdığım notlar, TechWorld Nina kanalına ait olan 3.5 saatlik "Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours]" videosunun Türkçe çevirisidir.
 
-![](https://img.youtube.com/vi/X48VuDVv0do/0.jpg)](https://www.youtube.com/watch?v=X48VuDVv0do&t=2949s)
+[![Teşekkürler](https://img.youtube.com/vi/X48VuDVv0do/0.jpg)](https://www.youtube.com/watch?v=X48VuDVv0do&t=2949s)
 
 
 ## İçindekiler
