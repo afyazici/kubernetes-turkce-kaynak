@@ -607,6 +607,7 @@ Logları görüntülemeden önce Nginx hiçbir şey kaydetmediği için başka b
 ![](images/49.png)
 
 * `kubectl describe pod [POD_NAME]` events sekmesinde bize state değişikliklerini verir.
+
 ![](images/50.png)
 
 Loglamak, uygulamanın gerçekte neyi yazdığını görmede ve hata ayıklamada yardımcı olmaktadır.
