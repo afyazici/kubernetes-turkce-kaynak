@@ -8,7 +8,9 @@ Bu yazdığım notların tamamı aşağıdaki videodan alınmıştır.
 ## İçindekiler
 
 
-- [Kubernetes Nedir?](#başlık-1)
+- [Kubernetes Nedir?](#kubernetes-nedir)
+- [Kubernetes Nedir?](#kubernetes-nedir?)
+- [Kubernetes Nedir?](#Kubernetes-Nedir?)
 - [Kubernetes'ın Avantajları:](#başlık-2)
 
 
