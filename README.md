@@ -1,11 +1,17 @@
 # Kubernetes
 
+---
+
+[![Kubernetes](images/header.png)](https://www.kubernetes.io)
+
+---
+
 ![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white) ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white)
 
 * Buradaki notlar, TechWorld Nina kanalına ait olan 3.5 saatlik "Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours]" videosunun Türkçe çevirisidir.
 * Video linki aşağıda yer almaktadır.
-
 [![Teşekkürler](images/nina.jpg)](https://www.youtube.com/watch?v=X48VuDVv0do&t=2949s)
+
 
 
 ## İçindekiler
