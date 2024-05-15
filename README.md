@@ -9,9 +9,38 @@ Bu yazdığım notların tamamı aşağıdaki videodan alınmıştır.
 
 
 - [Kubernetes Nedir?](#kubernetes-nedir)
-- [Kubernetes Nedir?](#kubernetes-nedir?)
-- [Kubernetes Nedir?](#Kubernetes-Nedir?)
-- [Kubernetes'ın Avantajları:](#başlık-2)
+- [Kubernetes Avantajları?](#kubernetes-avantajları)
+- [Kubernetes Componentleri?](#kubernetes-componentleri)
+  - [Pod](#pod)
+  - [Service ve Ingress](#service-ve-ingress)
+  - [ConfigMap ve Secret](#configmap-ve-secret)
+  - [Volume](#volume)
+  - [Deployment ve StatefulSet](#deployment-ve-statefulset)
+- [Kubernetes Mimarisi](#kubernetes-mimarisi)
+  - [Node Process](#node-process)
+    - [1) Container Runtime](#1-container-runtime)
+    - [2) Kubelet](#2-kubelet)
+    - [3) Kube Proxy](#3-kube-proxy)
+  - [Master Node](#master-node)
+    - [1) API Server](#1-api-server)
+    - [2) Scheduler](#2-scheduler)
+    - [3) Controller Manager](#3-controller-manager)
+    - [4) Etcd](#4-etcd)
+- [Cluster Yapısı](#cluster-yapisi)
+- [Minikube ve Kubectl Kurulumu](#cluster-yapisi)
+  - [Minikube](#minikube)
+  - [Kubectl](#kubectl)
+  - [Kurulum](#kurulum)
+- [İlk Cluster](#ilk-cluster)
+- [Main Kubectl Komutları](#main-kubectl-komutlari)
+  - [Layerların Çalışma Şekli](#layerların-çalışma-şekli)
+  - [Debugging Pods](#debugging-pods)
+  - [Deployment Silme ve Apply configuration file](#deployment-silme-ve-apply-configuration-file)
+  - [Kubectl Apply](#kubectl-apply)
+    - [Crud Commands](#crud-commands)
+    - [Status of Different K8s Components](#status-of-different-k8s-components)
+    - [Debugging Pods](#debugging-pods)
+    - [Use Configuration File for CRUD](#use-configuration-file-for-crud)
 
 
 ## Kubernetes Nedir?
@@ -22,13 +51,13 @@ Bu yazdığım notların tamamı aşağıdaki videodan alınmıştır.
     - sanal ortamda
     - bulut ortamında
 
-## Kubernetes'ın Avantajları:
+## Kubernetes Avantajları:
 
 - **Yüksek erişilebilirlik** veya kesintisiz çalışma
 - **Ölçeklenebilirlik** veya yüksek performans
 - **Afet kurtarma** - yedekleme ve geri yükleme
 
-## Kubernetes Components
+## Kubernetes Componentleri
 ### Pod
 * Pod Kubernete's en küçük birimidir.
 * Konteyner üzerinde sanallaştırma yapar. (abstraction)
@@ -40,7 +69,7 @@ Bu yazdığım notların tamamı aşağıdaki videodan alınmıştır.
 * Bir pod içinde birden fazla konteyner çalıştırabilirsiniz, ancak genellikle bir pod başına bir uygulama bulunur.
 * Her pod kendi IP adresine sahiptir. Her pod, birbirleriyle bu internal IP adresini kullanarak iletişim kurabilir.
 * Ancak, Kubernetes'teki pod bileşenleri de geçicidir: yani çok kolay bir şekilde ölebilirler. Örneğin, bir veritabanı konteyneri kaybedersem, konteyner içindeki uygulama çöktüğü veya sunucu kaynakları tükendiği için pod ölür ve yerine yeni bir tane oluşturulur ve bu durumda yeni bir IP adresi atanır. Bu, veritabanıyla IP adresini kullanarak iletişim kuruyorsak elbette sakıncalıdır, her pod yeniden başladığında her seferinde yeniden ayarlamamız gerekir. Bu nedenle, pod'un yeniden başladığında IP adresini ayarlamanıza gerek kalmadan veritabanıyla iletişim kurmanızı sağlayan başka bir Kubernetes bileşeni olan `Service` kullanılır.
-### Service and Ingress,
+### Service ve Ingress
 
 * Service, her bir pod'a bağlanabilen sabit bir IP adresidir. Uygulamamızın kendi `service`'i olacak ve veritabanı pod'u kendi `service`'ine sahip olacak. Buradaki güzel şey, servis ve Pod'un yaşam döngüleri birbirine bağlı değil, bu yüzden Pod ölse bile `Service` ve IP adresi kalır. Artık endpoint'i değiştirmemize gerek yoktur.
 
@@ -59,7 +88,7 @@ Bunun için Kubernetes'in başka bir bileşeni olan `Ingress` var. Bu şekilde, 
 ![](images/5.png)
 
 * Şimdi, Kubernetes'in çok temel bileşenlerini gördük ve gördüğünüz gibi, bu çok basit bir kurulum, sadece bir sunucu ve birkaç konteyner çalıştırıyoruz ve bazı component'ler var.
-### ConfigMap and Secret
+### ConfigMap ve Secret
 
 Yani, pod'lar birbirleriyle `service` aracılığıyla iletişim kurar. Uygulamamızın, veritabanı ile iletişim kurmak için kullandığı bir database endpoint `örneğin mongodb service`'i olacak. Ancak bu veritabanı URL'sini (ya da endpoint) genellikle nerede yapılandırırız?
 
@@ -87,7 +116,7 @@ Aslında en çok kullanılan Kubernetes temel bileşenlerinin neredeyse tamamın
 
 ![](images/11.png)
 
-### Volumes
+### Volume
 Şimdi genel olarak çok önemli bir kavramı inceleyelim, bu da ==veri depolama== ve Kubernetes içerisinde nasıl çalıştığıdır. Yani, uygulamamızın kullandığı bir database partımız var ve bir miktar verimiz var. Şu anda gördüğünüz bu kurulumla, eğer veritabanı container veya pod'u yeniden başlatılırsa, veri kaybolur. Ve bu açıkça sorunlu ve elverişsizdir, çünkü database'deki verilerinizin veya günlük verilerinizin uzun süreli güvenilir bir şekilde kalıcı olmasını istersiniz. Ve bunu Kubernetes'te yapmanın yolu, Kubernetes'in başka bir bileşeni olan `Volumes` kullanmaktır.
 
 ![](images/12.png)
@@ -100,7 +129,7 @@ Böylece, database pod'u veya caontainer yeniden başlatıldığında, tüm veri
 
 Kubernetes kümesi ve tüm bileşenlerinin ve depolama arasındaki farkı anlamanız önemlidir, yerel veya uzak bir depolama olması fark etmeksizin, depolamayı Kubernetes kümesine takılmış harici bir sabit diske benzetebilirsiniz. Çünkü point is, Kubernetes kümesi açıkça hiçbir veri kalıcılığını yönetmez, bu da Kubernetes kullanıcısı veya yöneticisi olarak sizin veriyi yedeklemenizden, çoğaltmanızdan, yönetmenizden ve uygun donanımda saklamanızdan emin olmanız gerektiği anlamına gelir, çünkü Kubernetes bununla ilgilenmez.
 
-### Deployment and Stateful Set
+### Deployment ve StatefulSet
 
 Şimdi, her şey mükemmel bir şekilde çalışıyor ve bir kullanıcı bir tarayıcı aracılığıyla uygulamaya erişebiliyor. Şimdi, bu kurulumla, application pod'u ölürse, crashlerse veya yeni bir container image oluşturduğum için pod'u restart etmem gerekiyorsa ne olurdu? Basically, bir kullanıcının uygulamama ulaşamadığı bir süre olan bir kesintim olurdu, bu da end product'ta gerçekleşirse çok kötü bir durumdur.
 
@@ -145,18 +174,18 @@ Kubernetes'in ne yaptığını ve cluster'ın nasıl self-managed olduğunu, sel
 
 Ve Kubernetes'in bunu yapma şekli, her node'da bulunması gereken ve bu pod'ları planlamak ve yönetmek için kullanılan ==three process== kullanmasıdır. Yani, node'lar, asıl işi yapan cluster serverlardır.. Bu yüzden bazen onlara worker nodes da denir.
 
-#### 1) container runtime
+#### 1) Container Runtime
 
 Her node'da çalışması gereken ilk süreç, `container runtime`dır. Benim örneğimde Docker var, ancak başka bir teknoloji de olabilir. Yani, applitacion pod'larında içinde çalışan containers olduğu için, her node'da bir `container runtime`  kurulmalıdır.
 
-#### 2) kubelet
+#### 2) Kubelet
 Ancak pod'ları ve bu pod'ların altındaki container'ları schedule eden aslında `kubelet`tir, bu da Kubernetes'in bir parçasıdır. container runtime; hem konteyner çalışma zamanı hem de makine, yani node'un kendisiyle arayüzü olduğu gibi, sonuçta, kubelet bu config'i almak ve aslında bir pod'u çalıştırmak veya içinde bir container başlatmak ve ardından o node'dan container'e CPU, RAM ve depolama kaynakları gibi kaynaklar atamakla sorumludur.
 
 Bu nedenle, genellikle bir Kubernetes cluster, kurulu olmalı ve `kubelet` hizmetlerine sahip birden fazla node'dan oluşur. Ve bu worker nodes, bu örnekteki application ve database pod'larının replikalarını çalıştıracak yüzlerce diğer node'u çalıştırır.
 
 Ve aralarındaki iletişim şekli, `services` kullanılmasıdır, bu da isteği application parçasına veya örneğin bir database'e yönlendiren bir `load-balancer` gibi çalışır ve ardından ilgili parçaya yönlendirir.
 
-#### 3) kube-proxy
+#### 3) Kube Proxy
 
 Hizmetlerden pod'lara istekleri iletmekten sorumlu üçüncü süreç aslında `kube-proxy`dir ve her node'da kurulmalıdır. Kube-proxy, düşük bir işlem yükü ile performanslı bir şekilde iletişim kurulmasını sağlayan akıllı yönlendirme mantığına sahiptir.
 
@@ -229,7 +258,7 @@ Artık muhtemelen ana işlemlerin, özellikle de verileri güvenilir bir şekild
 
 
 
-## Örnek Cluster Yapısı
+## Cluster Yapısı
 
 
 Şimdi worker ve master node'larında çalışan işlemleri gördükten sonra, gerçek hayattaki bir cluster kurulumuna bakalım. Çok küçük bir cluster'da muhtemelen iki master node ve üç worker node olur.
@@ -249,11 +278,9 @@ Aynı şekilde, iki worker node'unda ihtiyacınız varsa, bare metal sunucular e
 Bu şekilde, uygulama karmaşıklığı ve kaynak gereksinimi arttıkça, Kubernetes kümenizinin gücünü ve kaynaklarını sonsuza kadar artırabilirsiniz.
 
 
-## Minikube ve Kubectl Lokal Kurulumu
+## Minikube ve Kubectl Kurulumu
 
-### **Minikube Nedir?**
-
-#### 1) Minikube
+### Minikube
 
 ![](images/31.png)
 
@@ -277,7 +304,7 @@ Dizüstü bilgisayarınızda VirtualBox veya başka bir hipervizör aracılığ�
 
 Dizüstü bilgisayarınızda veya PC'nizde yerel makinenizde bir küme veya mini küme kurduktan sonra, kümeyle etkileşim kurmak için bir yola ihtiyacınız vardır. Bileşenler oluşturmak, yapılandırmak vb. isteyeceksiniz ve işte `kubectl` devreye giriyor.
 
-#### 2) Kubectl
+### Kubectl
 
 local makinenizde Minikube'u temsil eden bu virtual node'a sahip olduktan sonra, bu cluster ile etkileşim kurmak için bir yola ihtiyacınız vardır. Dolayısıyla düğümde pod'lar ve diğer Kubernetes bileşenleri oluşturmanın bir yoluna ihtiyacınız vardır ve bunu Kubernetes clusterları için bir command line toolu olan `kubectl` kullanarak yapabilirsiniz.
 
@@ -299,7 +326,7 @@ Bu, Minikube çalışma şeklidir. `kubectl` cluster ile nasıl kullanılır? Bu
 
 Artık Minikube ve `kubectl`'nin ne olduğunu bildiğimize göre, onları pratikte görmek için gerçekten kuralım.
 
-#### 3) Kurulum
+### Kurulum
 Minikube bir sanallaştırmaya ihtiyaç duyar, çünkü daha önce bahsettiğimiz gibi bir VirtualBox kurulumunda veya bazı hipervizörlerde çalışacaktır. Bu nedenle bir tür hipervizör yüklemeniz gerekecektir. VirtualBox olabilir. Hyperkit yükleyeceğim ama bu adım adım talimatlarda da yer alacak. Size Linux'a nasıl kurulacağını göstereceğim.
 
 ```shell
@@ -442,7 +469,7 @@ Buradan itibaren mini Kub kümesi ile `kubectl` komut satırı aracılığıyla 
 - **Introduce a new label "node-role.kubernetes.io/control-plane" that will be applied in parallel to "node-role.kubernetes.io/master" until the removal of the "node-role.kubernetes.io/master" label.**
 
 
-## Ana Kubectl Komutları
+## Main Kubectl Komutları
 
 Bu yazımda size bazı temel Kubectl komutlarını göstereceğim ve minikube'da nasıl create ve debug Parts yapacağınızı göstereceğim.
 
@@ -639,7 +666,7 @@ Exec, hata ayıklama veya bir şeyleri test etmek veya denemek istediğinizde ku
 
 ---
 
-### Delete deployment - Apply configuration file
+### Deployment Silme ve Apply Configuration File
 
 Tabii ki Cube CTL ile potları silebilirim,
 Önce deployment'ları ve podları görüntüleyelim.
