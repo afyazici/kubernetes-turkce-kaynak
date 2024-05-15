@@ -1,8 +1,10 @@
 # Kubernetes
 
-Bu yazdığım notların neredeyse tamamı aşağıdaki videodan alınmıştır.
+![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
 
-[![Teşekkürler](https://img.youtube.com/vi/X48VuDVv0do/0.jpg)](https://www.youtube.com/watch?v=X48VuDVv0do&t=2949s)
+Bu yazdığım notlar, TechWorld Nina kanalına ait olan 3.5 saatlik "Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours]" videosunun Türkçe çevirisidir.
+
+![](https://img.youtube.com/vi/X48VuDVv0do/0.jpg)](https://www.youtube.com/watch?v=X48VuDVv0do&t=2949s)
 
 
 ## İçindekiler
@@ -74,11 +76,11 @@ Ancak, Kubernetes'teki pod bileşenleri de geçicidir: yani çok kolay bir şeki
 
 ### Service ve Ingress
 
-* Service, her pod'a bağlanabilen sabit bir IP adresidir. Uygulamamızın kendi `service`'i olacak ve veritabanı pod'u kendi `service`'ine sahip olacak. Buradaki güzel şey, `service` ve Pod'un yaşam döngüleri birbirine bağlı değil. Bu yüzden Pod ölse bile `Service` ve bu `service`'e ait IP adresi kalır. Bu şekilde endpoint'i değiştirmemize gerek yoktur.
+* Service, her pod'a bağlanabilen sabit bir IP adresidir. Uygulamamızın kendi service'i olacak ve veritabanı pod'u kendi service'ine sahip olacak. Buradaki güzel şey, service ve Pod'un yaşam döngüleri birbirine bağlı değil. Bu yüzden Pod ölse bile Service ve bu service'e ait IP adresi kalır. Bu şekilde endpoint'i değiştirmemize gerek yoktur.
 
 ![](images/2.png)
 
-* Tabii ki, uygulamamızın bir tarayıcı aracılığıyla erişilebilir olmasını isteriz değil mi? Bunun için bir `external service` oluşturmamız gerekiyor. `External Service`, dış kaynaklardan iletişimi açan bir servistir. Ancak, veritabanımızı halka açık isteklere açmak istemeyiz. Bunun için `Internal Service` adını verdiğimiz bir şey oluştururuz.
+* Tabii ki, uygulamamızın bir tarayıcı aracılığıyla erişilebilir olmasını isteriz değil mi? Bunun için bir external service oluşturmamız gerekiyor. `External Service`, dış kaynaklardan iletişimi açan bir servistir. Ancak, veritabanımızı halka açık isteklere açmak istemeyiz. Bunun için `Internal Service` adını verdiğimiz bir şey oluştururuz.
 
 ![](images/3.png)
 
