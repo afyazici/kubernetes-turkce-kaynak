@@ -1,5 +1,7 @@
 # Kubernetes
 
+Bu yazdığım notların neredeyse hepsi aşağıdaki videoya aittir.
+[![Teşekkürler](https://img.youtube.com/vi/X48VuDVv0do/0.jpg)](https://www.youtube.com/watch?v=X48VuDVv0do&t=2949s)
 
 ## Kubernetes Nedir?
 - **Kubernetes**, açık kaynaklı bir konteyner yönetim aracıdır.
