@@ -41,7 +41,7 @@
   - [Minikube](#minikube)
   - [Kubectl](#kubectl)
   - [Kurulum](#kurulum)
-- [İlk Cluster](#ilk-cluster)
+- [İlk Cluster](#İlk-cluster)
 - [Main Kubectl Komutları](#main-kubectl-komutları)
   - [Layerların Çalışma Şekli](#layerların-çalışma-şekli)
   - [Debugging Pods](#debugging-pods)
