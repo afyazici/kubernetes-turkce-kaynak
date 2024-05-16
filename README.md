@@ -47,10 +47,7 @@
   - [Debugging Pods](#debugging-pods)
   - [Deployment Silme ve Apply Configuration File](#deployment-silme-ve-apply-configuration-file)
   - [Kubectl Apply](#kubectl-apply)
-    - [Crud Commands](#crud-commands)
-    - [Status of Different K8s Components](#status-of-different-k8s-components)
-    - [Debugging Pods](#debugging-pods)
-    - [Use Configuration File for CRUD](#use-configuration-file-for-crud)
+    - [Özet](#Özet)
 - [Kubernetes YAML Konfigürasyonu](#kubernetes-yaml-konfigürasyonu)
   - [3 Parçada K8s Config Dosyası](#3-parçada-k8s-config-dosyası)
   - [Config Dosyasının Formatı](#config-dosyasının-formatı)
@@ -813,20 +810,22 @@ Eski deployment hala ayakta (9m45s) fakat yeni bir replika oluşturuldu(3m22s) �
 Özetlemek gerekirse, bu yazıda birkaç kubectl komutuna baktık, bir component oluşturmayı, nasıl configure edeceğimizi ve sileceğimizi gördük. Pod'ların, deployment'ların, replikaset'lerinin vb. state'lerini nasıl alacağımızı gördük. Ayrıca Pod'un içindeki uygulamanın konsola yazdığı her şeyi nasıl kaydedeceğimizi gördük ve `kubectl exec`'i kullanarak çalışan bir konteynerdan nasıl shell alacağımızı gördük. Son olarak, kubernetes yapılandırma dosyasını ve `kubectl apply` komutunu kullanarak componentleri nasıl oluşturup güncelleyeceğimizi gördük.
 Son olarak azıcık da `kubectl describe` komutunu gördük, bu da bir konteynerin bir Pod'da sorun giderme için ek bilgi almak istediğinizde kullandığınız bir komuttu.
 
-#### Crud Commands:
+### Özet
+
+**Crud Commands**
 * Create deployment                  ->        `kubectl create deployment [name]`
 * Edit deployment                    ->        `kubectl edit deployment [name]`
 * Delete deployment                  ->        `kubectl delete deployment [name]`
 
-#### Status of different K8s components
+**Status of different K8s components**
 * `kubectl get nodes | pod | services | replicaset | deployment`
 
-#### Debugging pods
+**Debugging Pods**
 * Log to console                     ->        `kubectl logs [pod_name]`
 * Get interactive Terminal           ->        `kubectl exec -it [pod_name] -- /bin/bash`
 * Get info about pod                 ->        `kubectl describe pod [pod_name]`  
 
-#### Use configuration file for CRUD
+**Use configuration file for CRUD**
 * Apply a configuration file         ->        `kubectl apply -f [file_name]`
 * Delete with configuration file     ->        `kubectl delete -f [file_name]`
 
