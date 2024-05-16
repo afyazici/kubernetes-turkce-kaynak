@@ -47,7 +47,7 @@
   - [Debugging Pods](#debugging-pods)
   - [Deployment Silme ve Apply Configuration File](#deployment-silme-ve-apply-configuration-file)
   - [Kubectl Apply](#kubectl-apply)
-    - [Özet](#Özet)
+    - [Komutları Hatırlayalım](#komutları-hatırlayalım)
 - [Kubernetes YAML Konfigürasyonu](#kubernetes-yaml-konfigürasyonu)
   - [3 Parçada K8s Config Dosyası](#3-parçada-k8s-config-dosyası)
   - [Config Dosyasının Formatı](#config-dosyasının-formatı)
@@ -810,7 +810,7 @@ Eski deployment hala ayakta (9m45s) fakat yeni bir replika oluşturuldu(3m22s) �
 Özetlemek gerekirse, bu yazıda birkaç kubectl komutuna baktık, bir component oluşturmayı, nasıl configure edeceğimizi ve sileceğimizi gördük. Pod'ların, deployment'ların, replikaset'lerinin vb. state'lerini nasıl alacağımızı gördük. Ayrıca Pod'un içindeki uygulamanın konsola yazdığı her şeyi nasıl kaydedeceğimizi gördük ve `kubectl exec`'i kullanarak çalışan bir konteynerdan nasıl shell alacağımızı gördük. Son olarak, kubernetes yapılandırma dosyasını ve `kubectl apply` komutunu kullanarak componentleri nasıl oluşturup güncelleyeceğimizi gördük.
 Son olarak azıcık da `kubectl describe` komutunu gördük, bu da bir konteynerin bir Pod'da sorun giderme için ek bilgi almak istediğinizde kullandığınız bir komuttu.
 
-### Özet
+### Komutları Hatırlayalım
 
 **Crud Commands**
 * Create deployment                  ->        `kubectl create deployment [name]`
