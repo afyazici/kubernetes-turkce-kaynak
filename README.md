@@ -55,7 +55,7 @@
   - [3 Parçada K8s Config Dosyası](#3-parçada-k8s-config-dosyası)
   - [Config Dosyasının Formatı](#config-dosyasının-formatı)
   - [Podlar için Blueprint (Template)](#podlar-için-blueprint-template)
-  - [Connecting Components *Labels - Selectors - Ports*](#connecting-components-labels-selectors-ports)
+  - [Connecting Components *Labels - Selectors - Ports*](#connecting-components-labels--selectors--ports)
 
 ## Kubernetes Nedir?
 - **Kubernetes**, açık kaynaklı bir konteyner yönetim aracıdır.
