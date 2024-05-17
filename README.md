@@ -833,8 +833,8 @@ Son olarak azıcık da `kubectl describe` komutunu gördük, bu da bir konteyner
 > * Deployment Oluşturma                 ->        `kubectl create deployment [name]`
 > * Deployment Düzenleme                 ->        `kubectl edit deployment [name]`
 > * Deployment Silme                     ->        `kubectl delete deployment [name]`
-> 
-> **Farklı Kubernete Componenetlerin Durumu**
+>
+> **Farklı Kubernetes Componenetlerin Durumu**
 > * `kubectl get nodes | pod | services | replicaset | deployment`
 >
 > **Podlar ile Debugging**
