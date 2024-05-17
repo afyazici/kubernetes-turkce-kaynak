@@ -59,6 +59,9 @@
   - [3) MongoDB Internal Service](#3-mongodb-internal-service)
   - [4) Mongo Express Deployment & Service & ConfigMap](#4-mongo-express-deployment--service--configmap)
 
+---
+
+
 ## Kubernetes Nedir?
 - **Kubernetes**, açık kaynaklı bir konteyner yönetim aracıdır.
 - Google tarafından geliştirilmiştir.
@@ -67,11 +70,15 @@
     - sanal ortamda
     - bulut ortamında
 
+---
+
 ## Kubernetes Avantajları:
 
 - **Yüksek erişilebilirlik** veya kesintisiz çalışma
 - **Ölçeklenebilirlik** veya yüksek performans
 - **Afet kurtarma** - yedekleme ve geri yükleme
+
+---
 
 ## Kubernetes Componentleri
 ### Pod
@@ -98,7 +105,7 @@ Ancak, Kubernetes'teki pod bileşenleri de geçicidir: yani çok kolay bir şeki
 
 ![](images/3.png)
 
-* External Service URL'sinin çok pratik olmadığını fark ettiniz mi? Temelde, bir HTTP protokolüyle bir node IP adresi ve servis port numarasına sahibiz. Bu hızlı bir şekilde bir şeyleri test etmek istiyorsak iyidir, ancak end-product için iyi değildir. Genellikle, uygulamamızla güvenli bir protokol ve bir alan adı kullanmak isteriz.
+* External Service URL'sinin çok pratik olmadığını fark ettik değil mi? Temelde, bir HTTP protokolüyle bir node IP adresi ve servis port numarasına sahibiz. Bu hızlı bir şekilde bir şeyleri test etmek istiyorsak iyidir, ancak end-product için iyi değildir. Genellikle, uygulamamızla güvenli bir protokol ve bir alan adı kullanmak isteriz.
 
 ![](images/4.png)
 
@@ -124,7 +131,8 @@ Veritabanı URL'i gibi küçük bir değişiklik için bu gerçekten zahmetli. B
 
 Şimdi, external configuration'ın bir parçası aynı zamanda database kullanıcı adı ve şifresi olabilir değil mi? Bu veriler de uygulama dağıtım sürecinde değişebilir. Ancak, bir şifreyi veya diğer kimlik bilgilerini düz metin formatında bir configmap'e koymamız güvensiz olur.
 
-![](images/9.png)
+>[!WARNING]
+>![](images/9.png)
 
 Bu amaçla, Kubernetes'in `Secret` adında bir başka bileşeni daha var. Yani, Secret, ConfigMap gibi, ancak fark şu ki; şifre gibi gizli verileri saklamak için kullanılır. Ve tabii ki, düz metin formatında değil, base64 formatında kodlanmış olarak saklanır. Yani, Secret, kullanıcı adları gibi kimlik bilgilerini içerecek ve veritabanı kullanıcılarını içerecektir. ConfigMap'e de koyabiliriz, ancak önemli olan şifreler, sertifikalar, başkalarının erişimini istemediğimiz şeyler Secret'e koyulmalıdır. Aynı ConfigMap gibi, sadece Pod'umuza bağlarız, böylece Pod bu verileri görebilir ve Secret'ten okuyabilir. ConfigMap veya Secret'ten verileri, örneğin environment variables olarak veya hatta bir özellikler dosyası olarak uygulamamızın içinde kullanabiliriz.
 
@@ -182,7 +190,8 @@ Bu çok önemli bir ayrımdır. StatefulSet, aynı deployment gibi, pod'ları re
 
 ![](images/18.png)
 
-Ancak, bir Kubernetes kümesinde StatefulSets kullanarak database uygulamalarını deploy etmek biraz zahmetli olabilir. Bu yüzden, database uygulamalarını Kubernetes kümesinin dışında barındırmak ve yalnızca dağıtımları veya durumsuz uygulamaları Kubernetes kümesinin içinde sorunsuz bir şekilde çoğaltmak ve ölçeklendirmek ve dış database ile iletişim kurmak yaygın bir uygulamadır.
+> [!TIP]
+> Ancak, bir Kubernetes kümesinde StatefulSets kullanarak database uygulamalarını deploy etmek biraz zahmetli olabilir. Bu yüzden, database uygulamalarını Kubernetes kümesinin dışında barındırmak ve yalnızca dağıtımları veya durumsuz uygulamaları Kubernetes kümesinin içinde sorunsuz bir şekilde çoğaltmak ve ölçeklendirmek ve dış database ile iletişim kurmak yaygın bir uygulamadır.
 
 Şimdi, uygulama pod'umuzun iki replikası ve database'in iki kopyası olduğunda ve hepsi load-balanced olduğunda, kurulumumuz daha güvenlidir. Bu senaryoda eğer Node 1 yeniden başlatılsaydı veya çökseydi, hala uygulama ve database pod'larının çalıştığı ikinci bir node'umuz olurdu. Uygulama, bu iki replikadan yeniden oluşturulana kadar kullanıcı tarafından erişilebilir olacaktır, bu yüzden kesintiyi önlemiş oluruz.
 
@@ -191,6 +200,8 @@ Ancak, bir Kubernetes kümesinde StatefulSets kullanarak database uygulamaların
 Özetlemek gerekirse, en çok kullanılan Kubernetes bileşenlerini inceledik. Parçalar arasında iletişim kurmak için `pod`lar ve `servis`lerle başladık, ve trafiği clusterlara yönlendirmek için kullanılan `Ingress` bileşenini inceledik. Ayrıca, `ConfigMaps` ve `Secret` kullanarak external configuration, ve `Volumes` kullanarak veri kalıcılığını inceledik. Ve son olarak, `Deployments` ve `StatefulSets` gibi replicating ve blueprintlere baktık.
 
 Burada `stateful applications` özellikle databaseler gibi stateful applications için kullanılır. Ve evet, Kubernetes'in sunduğu çok daha fazla bileşen var, ama bunlar çekirdek, temel olanları. Bu temel bileşenleri kullanarak oldukça güçlü Kubernetes kümesi oluşturabiliriz.
+
+---
 
 ## Kubernetes Mimarisi
 
@@ -230,7 +241,7 @@ Ancak şimdi soru şu: Bu cluster ile nasıl etkileşime girilir? Yeni bir appli
 
 ### Master Node
 
-Master servers(master nodes), içerisinde tamamen farklı processler çalıştırır. Ve bunlar, cluster state ve worker nodes'ları kontrol eden =`her yönetici düğümünde çalışan dört süreçtir`.
+Master servers(master nodes), içerisinde tamamen farklı processler çalıştırır. Ve bunlar, cluster state ve worker nodes'ları kontrol eden, `her yönetici düğümünde çalışan dört süreçtir`.
 
 #### 1) API Server
 
@@ -244,7 +255,10 @@ Bu, yeni pod'lar planlamak, yeni applications deploy etmek, yeni servisler oluş
 
 ![](images/22.png)
 
-Ayrıca, dağıtımımızın durumu veya cluster health etc., gibi sorgu isteklerini yapmak isteyebiliriz. Bu sorgular API sunucusuna bir istek gönderir ve o da bize yanıt verir. Bu durum güvenlik açısından gayet iyidir çünkü clusterlara yalnızca `bir entry point` vardır.
+Ayrıca, dağıtımımızın durumu veya cluster health etc., gibi sorgu isteklerini yapmak isteyebiliriz. Bu sorgular API sunucusuna bir istek gönderir ve o da bize yanıt verir.
+
+> [!NOTE]
+> Bu durum güvenlik açısından gayet iyidir çünkü clusterlara yalnızca `bir entry point` vardır.
 
 #### 2) Scheduler
 
@@ -284,11 +298,11 @@ Etcd deposunun bir küme beyni olarak adlandırılmasının sebebi, scheduler, c
 
 Cevap: Tüm bu bilgiler etcd kümesinde saklanır. Etcd'nin key-value deposunda saklanmayan şey ise gerçek uygulama verileridir. Örneğin, bir cluster içinde çalışan bir database uygulamamız varsa, veriler etcd'de değil, başka bir yerde saklanır. Bu, yalnızca master işlemlerinin worker işlemleriyle ve tersiyle iletişim kurması için kullanılan bir cluster state bilgisidir.
 
-Artık muhtemelen ana işlemlerin, özellikle de verileri güvenilir bir şekilde saklanması veya çoğaltılması gereken etcd deposunun, cluster operasyonu için kritik öneme sahip olduğunu anlamışsınızdır. Bu nedenle, uygulamada bir Kubernetes kümesi genellikle birden fazla master'dan oluşur. Her bir master düğümü kendi ana işlemlerini çalıştırır; elbette API sunucusu load-balanced'dır ve etcd deposu tüm master düğümleri arasında distributed bir depolama oluşturur.
+Artık muhtemelen ana işlemlerin, özellikle de verileri güvenilir bir şekilde saklanması veya çoğaltılması gereken etcd deposunun, cluster operasyonu için kritik öneme sahip olduğunu anlamışızdır. Bu nedenle, uygulamada bir Kubernetes kümesi genellikle birden fazla master'dan oluşur. Her bir master düğümü kendi ana işlemlerini çalıştırır; elbette API sunucusu load-balanced'dır ve etcd deposu tüm master düğümleri arasında distributed bir depolama oluşturur.
 
 ![](images/28.png)
 
-
+---
 
 ## Cluster Yapısı
 
@@ -310,6 +324,7 @@ Yine aynı şekilde, iki worker node'una ihtiyacımız varsa, bare metal sunucul
 İşte bu kadar.
 Bu şekilde, uygulama karmaşıklığı ve kaynak gereksinimi arttıkça, Kubernetes kümemizin gücünü ve kaynaklarını sonsuza kadar artırabiliriz.
 
+---
 
 ## Minikube ve Kubectl Kurulumu
 
@@ -445,6 +460,7 @@ daha fazlası için [kubernetes.io](https://kubernetes.io/docs/tasks/tools/insta
 
 Minikube oldukça basit bir komut satırı aracı ile birlikte gelir. Tek bir komutla tüm Kubernetes kümesini bu tek düğüm kurulumunda hızlıca başlatabilir, durdurabilir veya silebiliriz.
 
+---
 
 ## İlk Cluster
 
@@ -495,10 +511,6 @@ Yani, ana makinede kubelet adlı bir hizmetin çalıştığını görüyoruz, bu
 Buradan itibaren mini Kub kümesi ile `kubectl` komut satırı aracılığıyla etkileşime geçeceğiz. Minicube sadece cluster başlatma ve silme için kullanılır, ancak configuring ve diğer her şeyi `kubectl` aracılığıyla yapacağız.
 
 ---
-
-- **The label applied to control-plane nodes "node-role.kubernetes.io/master" is now deprecated and will be removed in a future release after a GA deprecation period.**
-- **Introduce a new label "node-role.kubernetes.io/control-plane" that will be applied in parallel to "node-role.kubernetes.io/master" until the removal of the "node-role.kubernetes.io/master" label.**
-
 
 ## Main Kubectl Komutları
 
@@ -624,7 +636,7 @@ spec:
 
 
 Deployment oluştururken verdiğimiz iki seçenek dışında her şeyin otomatik olarak oluşturulmuş bir deployment, otomatik olarak oluşturulmuş bir yapılandırma dosyasını alıyoruz.
-Şimdilik sadece resmi açıp istediğim versiyonu 1.16'ya sabitlemek istediğimi varsayalım ve bu değişikliği kaydedelim.
+Şimdilik sadece resmi açıp istediğim versiyonu 1.16'ya sabitlemek istediğimizi varsayalım ve bu değişikliği kaydedelim.
 
 ```
     spec:
@@ -653,7 +665,6 @@ Eğer ReplicaSet'i görüntülersek, eski olanın içinde pod olmadığını ve 
 
 Yani sonuç olarak deployment yapılandırmasını düzenledik ve altındaki her şey otomatik olarak güncellendi. Bu yaptığımız, Kubernetes'in sihrine ve nasıl çalıştığına bir örnektir.
 
----
 
 ### Debugging Pods
 
@@ -693,7 +704,6 @@ kubectl exec -it [POD_NAME] -- bin/bash
 Bu komutla mongodb uygulama konteynerinin terminalini alıyoruz ve şu anda root kullanıcısı olarak mongodb konteynerinin içindeyiz.
 Exec, hata ayıklama veya bir şeyleri test etmek veya denemek istediğinizde kullanışlıdır. Konteynera girebilir veya terminali alabilir ve orada bazı komutlar çalıştırabiliriz.
 
----
 
 ### Deployment Silme ve Apply Configuration File
 
@@ -815,24 +825,26 @@ Eski deployment hala ayakta (9m45s) fakat yeni bir replika oluşturuldu(3m22s) �
 Özetlemek gerekirse, bu yazıda birkaç kubectl komutuna baktık, bir component oluşturmayı, nasıl configure edeceğimizi ve sileceğimizi gördük. Pod'ların, deployment'ların, replikaset'lerinin vb. state'lerini nasıl alacağımızı gördük. Ayrıca Pod'un içindeki uygulamanın konsola yazdığı her şeyi nasıl kaydedeceğimizi gördük ve `kubectl exec`'i kullanarak çalışan bir konteynerdan nasıl shell alacağımızı gördük. Son olarak, kubernetes yapılandırma dosyasını ve `kubectl apply` komutunu kullanarak componentleri nasıl oluşturup güncelleyeceğimizi gördük.
 Son olarak azıcık da `kubectl describe` komutunu gördük, bu da bir konteynerin bir Pod'da sorun giderme için ek bilgi almak istediğinizde kullandığınız bir komuttu.
 
+
+
 ### Komutları Hatırlayalım
-
-**Crud Commands**
-* Create deployment                  ->        `kubectl create deployment [name]`
-* Edit deployment                    ->        `kubectl edit deployment [name]`
-* Delete deployment                  ->        `kubectl delete deployment [name]`
-
-**Status of different K8s components**
-* `kubectl get nodes | pod | services | replicaset | deployment`
-
-**Debugging Pods**
-* Log to console                     ->        `kubectl logs [pod_name]`
-* Get interactive Terminal           ->        `kubectl exec -it [pod_name] -- /bin/bash`
-* Get info about pod                 ->        `kubectl describe pod [pod_name]`  
-
-**Use configuration file for CRUD**
-* Apply a configuration file         ->        `kubectl apply -f [file_name]`
-* Delete with configuration file     ->        `kubectl delete -f [file_name]`
+> [!NOTE]
+> **Crud Komutları**
+> * Deployment Oluşturma                 ->        `kubectl create deployment [name]`
+> * Deployment Düzenleme                 ->        `kubectl edit deployment [name]`
+> * Deployment Silme                     ->        `kubectl delete deployment [name]`
+> 
+> **Farklı Kubernete Componenetlerin Durumu**
+> * `kubectl get nodes | pod | services | replicaset | deployment`
+>
+> **Podlar ile Debugging**
+> * Pod Logları                          ->        `kubectl logs [pod_name]`
+> * Terminal ile Poda Bağlanma           ->        `kubectl exec -it [pod_name] -- /bin/bash`
+> * Pod Bilgisi                          ->        `kubectl describe pod [pod_name]`  
+>
+> **CRUD için Config Dosyası Kullanma**
+> * Konfigürasyon Dosyasını Uygulama     ->        `kubectl apply -f [file_name]`
+> * Konfigürasyon Dosyasıyla Silme       ->        `kubectl delete -f [file_name]`
 
 
 ---
@@ -1074,6 +1086,7 @@ kubectl delete -f nginx-deployment.yml
 
 ![](images/91.png)
 
+---
 
 ## İlk Demo Uygulama
 
@@ -1420,8 +1433,8 @@ Bu IP adresi, Pod IP adresi ile eşleşiyor ve uygulamanın Pod içinde dinledi�
 
 Her şey mükemmel şekilde ayarlandı. MongoDB dağıtımı ve servisi oluşturuldu.
 
->[!TIP]
->Bir uygulamanın tüm componentlerini görmek istersek, `kubectl get all` ve `grep` komutunu birlikte kullanabiliriz. Böylece hem tüm componentleri listeleyip hem de isme göre  filtreleyebiliriz.
+> [!TIP]
+> Bir uygulamanın tüm componentlerini görmek istersek, `kubectl get all` ve `grep` komutunu birlikte kullanabiliriz. Böylece hem tüm componentleri listeleyip hem de isme göre  filtreleyebiliriz.
 
 ![](images/115.png)
 
@@ -1548,15 +1561,15 @@ Bu da secret key gibi oldukça basit. Beraber göz atalım:
 
 Hizmetimize  `mongodb-service` adını vermiştik. Bu yüzden hizmet adını kopyalayalım ve bunu veritabanı sunucusu URL'sine yazalım. Dosyayı mongo-configmap.yaml olarak kaydedelim.
 
->[!NOTE]
->Gizli anahtar gibi, çalıştırma veya oluşturma sırası önemlidir. ConfigMap'in zaten clusterda olması gerekiyor ki onu referans alabilelim. Bu yüzden işimiz bittiğinde, önce configmap'i oluşturmalı daha sonra deploymenti yapmalıyız.
+> [!NOTE]
+> Gizli anahtar gibi, çalıştırma veya oluşturma sırası önemlidir. ConfigMap'in zaten clusterda olması gerekiyor ki onu referans alabilelim. Bu yüzden işimiz bittiğinde, önce configmap'i oluşturmalı daha sonra deploymenti yapmalıyız.
 
 Yapılandırma haritasını deployment içinde referans almaya geldik. mongo-express.yaml dosyamıza geri dönelim.
 
->[!TIP]
->Yapılandırma haritasını deployment içinde referans almanın yolu gizli anahtara çok benzer. Tek fark burada `secret` yerine `configMap` yazacağız. Tamamı küçük ve büyük harf karışık olacak ve elbette adı `config map` olacak.
+> [!TIP]
+> Yapılandırma haritasını deployment içinde referans almanın yolu gizli anahtara çok benzer. Tek fark burada `secret` yerine `configMap` yazacağız. Tamamı küçük ve büyük harf karışık olacak ve elbette adı `config map` olacak.
 >
->![](images/120.png)
+> ![](images/120.png)
 
 Deploymenti tamamladık. Şimdi önce config map'i ve sonra Express dağıtımını oluşturalım.
 
