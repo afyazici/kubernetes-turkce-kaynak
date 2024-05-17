@@ -1087,9 +1087,13 @@ Bu bölümde iki uygulama deploy edeceğiz: MongoDB ve Express. Bu iki uygulama 
 * Bu bilgileri Mongo Express deployment'a geçirebilmenin yolu, deployment config dosyasında `environmental variables`(çevresel değişkenler) aracılığıyla olacak, çünkü uygulama bu şekilde yapılandırılmış.
 * Veritabanı URL'sini içeren bir `ConfigMap` ve kimlik bilgilerini içeren bir `Secret` oluşturacağız ve bunları deployment dosyasının içine referans olarak ekleyeceğiz.
 * Bu kurulum tamamlandığında, Mongo Express'in tarayıcı üzerinden erişilebilir olması gerekecek. Bunu yapmak için, `external request`(dış istek)lerin pod'a iletilmesine izin verecek bir `external service` oluşturacağız.
+
 ![](images/93.png)
+
 Bu kurulumla birlikte istek akışı aşağıdaki gibi görünecek.
+
 ![](images/94.png)
+
 * İstek tarayıcıdan gelecek ve Mongo Express'in external servisine gidecek.
 * Bu servis isteği Mongo Express pod'una iletecek.
 * Pod, MongoDB'nin internal servisine bağlanacak ve isteği MongoDB pod'una iletecek. Burada kimlik doğrulama yapılacak.
@@ -1097,9 +1101,13 @@ Bu kurulumla birlikte istek akışı aşağıdaki gibi görünecek.
 
 ### 1) MongoDB Pod
 İlk olarak, çalışan bir Minikube clusterımız var. `kubectl get all` komutunu kullanarak kümedeki tüm bileşenleri listelediğimde yalnızca default Kubernetes servisini görüyoruz.
+
 ![](images/95.png)
+
 Yani clusterımız boş ve sıfırdan başlıyoruz. İlk yapacağımız şey bir MongoDB deployment oluşturmak.
+
 ![](images/96.png)
+
 MongoDB için hazır olan deployment dosyası aşağıdaki şekilde.
 ```yaml
 apiVersion: apps/v1
@@ -1124,15 +1132,20 @@ spec:
 ```
 
 Bu dağıtıma `mongodb-deployment` adını verelim. Konteyner `mongodb` olarak adlandırılacak ve kullanacağımız image bu olacak. Hadi Docker-Hub'a gidip MongoDB image yapılandırmasını kontrol edelim.
-* *https://hub.docker.com/_/mongo
+* https://hub.docker.com/_/mongo
 
 Aradığımız şey, bu konteyneri nasıl kullanacağımız, yani hangi portları açacağı ve hangi harici yapılandırmaları alacağız.
+
 ![](images/97.png)
+
 MongoDB konteynerinin varsayılan portu 27017'miş, bu yüzden bunu kullanacağız.
 
 Ayrıca `Environment Variables`(çevresel değişkenler) kullanacağız.
+
 ![](images/98.png)
+
 root kullanıcı adı ve root şifresi. Yani konteyner başlatıldığında admin kullanıcı adı ve şifresini tanımlayabiliriz. Şimdi bunu config dosyamızda ayarlayalım.
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -1172,6 +1185,7 @@ spec:
 ### 2) Secret ve Referans
 
 Şimdi yapacağımız şey, değerleri referans alacağımız bir `secret` oluşturmak olacak.
+
 ![](images/100.png)
 
 Yani bu gizli dosya Kubernetes'te yer alacak ve kimse git reposunda buna erişemeyecek.
@@ -1205,7 +1219,7 @@ data:
 * Kullanıcı adını `root-username` ve şifreyi `root-password` olarak belirleyeceğiz.
 
 > [!IMPORTANT]
->**Buradaki önemli nokta, bu anahtar-değer çiftlerindeki değerlerin düz metin olmamasıdır. Bir gizli dosya oluştururken değerlerin base64 ile kodlanması gerekir. **
+>**Buradaki önemli nokta, bu anahtar-değer çiftlerindeki değerlerin düz metin olmamasıdır. Bir gizli dosya oluştururken değerlerin base64 ile kodlanması gerekir.**
 
 Bunu yapmanın en basit yolu terminale gitmektir. Burada, `echo -n` komutunu kullanacağız.
 ```bash
@@ -1213,7 +1227,9 @@ echo -n "username" | base64
 echo -n "password" | base64
 ```
 Buraya istediğim düz metin değerini koyalım. `username` ve `password` kullanalım ve base64 ile kodlayalım. Elde ettiğimiz değerleri secret confige kopyalayalım.
+
 ![](images/101.png)
+
 Tamamladıktan sonra dosyayı `mongo-secret.yaml` olarak kaydedelim.
 ```yaml
 apiVersion: v1
@@ -1267,7 +1283,9 @@ Artık Secret'ımızı deployment config dosyamızda referans alabiliriz. Config
 * `value` yerine `valueFrom` yazıyoruz ve altına `secretKeyRef` yazıyoruz.
 * `secretKeyRef`  name'i, `Secret` dosyamızın adı olacak.
 * `key` değerini almak için de, Secret dosyamızdan isimleriyle referans alacağız. `mongo-root-username`, `mongo-root-password`.
+
 ![](images/105.png)
+
 Bu şekilde referans almayı tamamlıyoruz.
 
 * Unutmayın, YAML dosyası girintilere çok dikkat eder.
@@ -1282,6 +1300,7 @@ kubectl apply -f [YAML_file]
 
 ![](images/106.png)
 ![](images/107.png)
+
 Deployment oluşturuldu, yani `get all` komutunu çalıştırırsam Pod'un başlatıldığını, deploymenti ve ReplicaSet'i görmeliyim.
 
 Şimdi Pod'un statusunu kontrol edelim. Konteyner oluşturuluyor, bu yüzden izlememiz gerekiyor. Eğer uzun sürerse ve bir sorun olup olmadığını görmek isterseniz, `kubectl describe pod` ve Pod adımızı yazıyoruz.
@@ -1307,7 +1326,7 @@ Tekrar `kubectl get pod` komutunu çalıştırırsak, Pod'un çalıştığını 
 YAML dosyamıza geri dönelim.
 
 > [!TIP]
-> YAML'da tek dosyada, birden fazla yaml yazabiliriz. YAML'da 3 tire `---`  belge ayırma sözdizimidir. Yani yeni bir belge başladığını belirtmiş oluyoruz.
+> **YAML'da tek dosyada, birden fazla yaml yazabiliriz. YAML'da 3 tire `---`  belge ayırma sözdizimidir. Yani yeni bir belge başladığını belirtmiş oluyoruz.**
 
 Hatta deployment ve servisi aynı config dosyasına koyabiliriz çünkü genelde bu iki dosya birlikte bulunur.
 
@@ -1437,9 +1456,12 @@ spec:
 ```
 
 Bu, MongoExpress deployment taslağı. İsim `express`.
-* `template:` Pod tanımımız var. Image adı `express`.
-Bu imajı da kontrol edelim. image adı `mongo-express`. *https://hub.docker.com/_/mongo-express*
+* `template:` Pod tanımımız var. Image adı `express`. Bu imajı da kontrol edelim. image adı `mongo-express`.
+
+*https://hub.docker.com/_/mongo-express*
+
 ![](images/117.png)
+
 Konteyner içindeki MongoExpress Port 8081'deymiş.
 Biraz aşağı inersek de çevresel değişkenleri(environmental variables) görebiliriz.
 
