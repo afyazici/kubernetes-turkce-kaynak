@@ -1035,7 +1035,9 @@ spec:
 ![](images/85.png)
 
 Ayrıca aşağıda görüldüğü gibi; nginx servisimiz de var.
+
 ![](images/86.png)
+
 `kubernetes` default servistir, her zaman oradadır. Bizim oluşturduğumuz `nginx-service` ve Port 80'de dinlemede.
 
 Şimdi, servisin istekleri doğru pod'lara ilettiğini nasıl doğrulayabiliriz? Bunun için:
