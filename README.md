@@ -1,4 +1,4 @@
-# Kubernetes Türkçe Döküman
+# Kubernetes Türkçe Döküman ☸️☸🐳👨‍💻 
 
 ---
 
@@ -6,7 +6,7 @@
 
 ---
 
-![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white) ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white) ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white) ![Obsidian](https://img.shields.io/badge/Obsidian-483699?style=for-the-badge&logo=Obsidian&logoColor=white)
 
 * TechWorld Nina kanalına ait olan 4 saatlik "Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours]" videosunu döküman formatında Türkçeye çeviriyorum. İngilizce konusunda sıkıntı yaşayanlar için faydalı bir *full tutorial* olacağına inanıyorum.
 
@@ -1747,4 +1747,4 @@ Arka planda olan şeyi şu şekilde açıklayabiliriz.
 ![](images/130.png)
 
 Basit bir uygulama kurulumunu bir Kubernetes kümesinde nasıl dağıtacağınızı böyle anlatmış olduk.
-Bu yaptığımız demo uygulamanın dosyalarını ilkuygulamademo dizinine de koydum.
+Bu yaptığımız demo uygulamanın dosyalarını `ilkuygulamademo` dizinine koydum.
