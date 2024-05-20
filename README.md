@@ -58,7 +58,7 @@
   - [2) Secret ve Referans](#2-secret-ve-referans)
   - [3) MongoDB Internal Service](#3-mongodb-internal-service)
   - [4) Mongo Express Deployment & Service & ConfigMap](#4-mongo-express-deployment--service--configmap)
-  - [4) Mongo Express External Service](#4-mongo-express-external-service)
+  - [5) Mongo Express External Service](#4-mongo-express-external-service)
 
 ---
 
