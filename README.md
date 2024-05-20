@@ -58,6 +58,7 @@
   - [2) Secret ve Referans](#2-secret-ve-referans)
   - [3) MongoDB Internal Service](#3-mongodb-internal-service)
   - [4) Mongo Express Deployment & Service & ConfigMap](#4-mongo-express-deployment--service--configmap)
+  - [4) Mongo Express External Service](#4-mongo-express-external-service)
 
 ---
 
@@ -1601,3 +1602,148 @@ kubectl logs [POD_NAME]
 ```
 
 ![](images/124.png)
+
+### 5) Mongo Express External Service
+
+![](images/131.png)
+
+Şimdi son adımımız, Express'e bir tarayıcıdan erişmektir. Bunu yapmak için mongo-express için bir External Service ihtiyacımız olacak. Öyleyse hadi bunu da oluşturalım.
+
+>[!TIP]
+>Daha önce yaptığımız gibi yine MongoExpress servisimizi, deploymentı ile aynı dosyada oluşturacağız. Çünkü zaten pratikte hiçbir zaman servis olmadan deploymentı olmaz. Bu yüzden onları aynı yaml dosyasında yazmak mantıklıdır.
+
+```yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+spec:
+  selector:
+    app: mongo-express
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+```
+
+Deployment dosyamızın devamına yukarıdaki servis configi yapıştırıyoruz. Bu, Mongo Express'in external servisi ve bu farkettiyseniz tamamen mongodb servisinin yapılandırmasıyla aynı görünüyor.
+
+![](images/125.png)
+
+
+* Servis portunu 8081 olarak açtık ve yine target Port, container Port'un dinlediği yerdir.
+
+**Peki bu servisi external(harici) yapacak olan şey nedir?**
+Bu servisi iki şey yaparak external yaparız:
+
+* *1) `spec` bölümünde, `selector` altına `type: Loadbalancer` yazarız.
+
+>[!INFO]
+>Sanıyoruz ki `external servis` için bu isim "LoadBalancer" olarak düzgün seçilmemiş çünkü `internal servis` de istekleri dengeleyip Load Balance yapabilir. İki mongodb podumuz olsa, internal servis de bu podlara gelen istekleri dengeleyebilirdi. Yani gerçekten de tür adı olarak `Load Balancer` seçilmesi çok iyi değil gibi çünkü kafa karışıklığına neden olabilir. Ancak, bu yük dengeleyici türü basitçe servise `external IP adres`i atar ve `external request`leri kabul eder.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+spec:
+  selector:
+    app: mongo-express
+  type: LoadBalancer         ## Tam burası..
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+```
+
+* 2) `nodePort: 30000`
+
+Yapacağımız ikinci şey ise, bu servisi harici yapmak için üçüncü bir port sağlamak. Bu da node port olacak ve bu, External IP adresinin açık olacağı port olacak. Ayrıca belirtelim ki bu port, Tarayıcıdan erişmek için kullanacağımız port olacak.
+
+Bu port aslında bir aralığa sahiptir ve bu aralık 30000 ile 32767 arasındadır, yani bu aralıkta bir port vermemiz gerekiyor, bu yüzden sadece 30000 ile gidelim, aralıktaki minimumdur.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+spec:
+  selector:
+    app: mongo-express
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+      nodePort: 30000
+```
+
+Artık hazır olduğumuza göre uygulamaya geçebiliriz. Ardından bu bağlantı noktalarının nasıl farklı olduklarına bakalım.
+
+```bash
+kubectl apply -f mongo-express.yaml
+```
+
+Hizmet oluşturuldu ve hizmeti `kubectl get service` ile görüntülersek, önceden oluşturduğumuz mongodb servisinin `ClusterIP`' tipinde olduğunu görüyoruz ve yeni oluşturduğumuz mongo express servisinin bir `LoadBalancer` olduğunu görüyoruz.
+
+```bash
+c3ng0@ubn:~/hxhdle/kubernetto$ kubectl get service
+NAME                    TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+kubernetes              ClusterIP      10.96.0.1        <none>        443/TCP          6d1h
+mongo-express-service   LoadBalancer   10.96.100.133    <pending>     8081:30000/TCP   9s
+mongodb-service         ClusterIP      10.111.249.213   <none>        27017/TCP        95m
+```
+
+Internal servis oluştururken herhangi bir tür belirtmedik çünkü zaten default olarak internal IP hizmeti türüdür.
+
+>[!NOTE]
+>İnternal Servis oluştururken `type` belirtmeye gerek yok çünkü zaten default olarak tanımlanır.
+>![](images/126.png)
+
+Fark ise;
+* ClusterIP, servise internal IP adresi verir. Aşağıda görüldüğü gibi:
+
+```bash
+mongodb-service         ClusterIP      10.111.249.213   <none>        27017/TCP        95m
+```
+
+* LoadBalancer, servise bir internal IP adresi verir, ancak bununla birlikte external isteklerin geleceği external IP adresi de verir. *(pending)*
+
+```bash
+mongo-express-service   LoadBalancer   10.96.100.133    <pending>     8081:30000/TCP   9s
+```
+
+* Şu an bize `pending` diyor çünkü minicube'deyiz ve bu normal kubernetes kurulumunda biraz daha farklı çalışır.  
+
+Dediğim gibi, "pending" durumu external IP adresini henüz almadığı anlamına gelir. Bu durumu Minikube'da yapmanın yolu `minikube service` komutunu kullanmaktır ve servisin adına ihtiyacımız olacak.
+
+```bash
+minikube service mongo-express-service
+```
+
+Bu komut temelde external servisimize bir genel IP adresi atayacak.
+Komutu çalıştırdığımızda tarayıcı açılacak ve karşımıza şu sayfa çıkacak:
+
+![](images/127.png)
+
+Eğer açılırken kullanıcı adı ve şifre sorarsa `admin:pass` olarak yazabiliriz.
+
+Ve Mongo Express sayfamızı görüyoruz. Komut satırına geri dönersek, buradaki bu komut Express servisini Public IP adresli URL atadığını ve bizim belirttiğimiz 30000 portunu kullandığını görüyoruz.
+
+![](images/128.png)
+
+Burada değişiklikler yaparsak, örneğin yeni bir veritabanı oluşturalım, ona testDB adını verelim ve Create Database ile isteği gönderelim.
+
+![](images/129.png)
+
+Arka planda olan şeyi şu şekilde açıklayabiliriz.
+* Bu isteğin Mongo Express'in external servisine ulaşması
+* Ardından Mongo Express poduna yönlendirilmesidir.
+* Express podu, Internal servis olan mongodb servisine bağlanır.
+* Mongodb servisi, isteğimizi sonunda mongodb Poduna iletir.
+* Sonra tüm bu yol geri gelir ve burada değişiklikleri görürüz.
+
+![](images/130.png)
+
+Basit bir uygulama kurulumunu bir Kubernetes kümesinde nasıl dağıtacağınızı böyle anlatmış olduk.
