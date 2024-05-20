@@ -1747,3 +1747,4 @@ Arka planda olan şeyi şu şekilde açıklayabiliriz.
 ![](images/130.png)
 
 Basit bir uygulama kurulumunu bir Kubernetes kümesinde nasıl dağıtacağınızı böyle anlatmış olduk.
+Bu yaptığımız demo uygulamanın dosyalarını ilkuygulamademo dizinine de koydum.
