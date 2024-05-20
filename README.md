@@ -1637,9 +1637,9 @@ Deployment dosyamızın devamına yukarıdaki servis configi yapıştırıyoruz.
 **Peki bu servisi external(harici) yapacak olan şey nedir?**
 Bu servisi iki şey yaparak external yaparız:
 
-* *1) `spec` bölümünde, `selector` altına `type: Loadbalancer` yazarız.
+1) `spec` bölümünde, `selector` altına `type: Loadbalancer` yazarız.
 
->[!INFO]
+>[!NOTE]
 >Sanıyoruz ki `external servis` için bu isim "LoadBalancer" olarak düzgün seçilmemiş çünkü `internal servis` de istekleri dengeleyip Load Balance yapabilir. İki mongodb podumuz olsa, internal servis de bu podlara gelen istekleri dengeleyebilirdi. Yani gerçekten de tür adı olarak `Load Balancer` seçilmesi çok iyi değil gibi çünkü kafa karışıklığına neden olabilir. Ancak, bu yük dengeleyici türü basitçe servise `external IP adres`i atar ve `external request`leri kabul eder.
 
 ```yaml
@@ -1657,7 +1657,7 @@ spec:
       targetPort: 8081
 ```
 
-* 2) `nodePort: 30000`
+2) `nodePort: 30000`
 
 Yapacağımız ikinci şey ise, bu servisi harici yapmak için üçüncü bir port sağlamak. Bu da node port olacak ve bu, External IP adresinin açık olacağı port olacak. Ayrıca belirtelim ki bu port, Tarayıcıdan erişmek için kullanacağımız port olacak.
 
