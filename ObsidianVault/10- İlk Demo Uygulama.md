@@ -655,3 +655,4 @@ Arka planda olan şeyi şu şekilde açıklayabiliriz.
 Basit bir uygulama kurulumunu bir Kubernetes kümesinde nasıl dağıtacağınızı böyle anlatmış olduk.
 
 ---
+- [[11- Kubernetes Namespaces]]

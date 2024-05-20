@@ -19,4 +19,5 @@ Kubernetes Türkçe DökümanTechWorld Nina kanalına ait olan 4 saatlik "Kubern
 - [[8- Main Kubectl Komutları]]
 - [[9- Kubernetes YAML Konfigürasyonu]]
 - [[10- İlk Demo Uygulama]]
+- [[11- Kubernetes Namespaces]]
 

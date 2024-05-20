@@ -1,0 +1,157 @@
+{
+  "main": {
+    "id": "7080fdae5a852f55",
+    "type": "split",
+    "children": [
+      {
+        "id": "92ee12a42afa1dc7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ddc4ce1a7b227575",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "11- Kubernetes Namespaces.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f1d5057f6443e4d6",
+    "type": "split",
+    "children": [
+      {
+        "id": "68e4da12de90273d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f0a4849198cab272",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "168303c518cf1909",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "2610ef7a93ea0463",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "35140b4ab585908c",
+    "type": "split",
+    "children": [
+      {
+        "id": "75d8c408d21bca54",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "81a84ab7b4caf8b6",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "11- Kubernetes Namespaces.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "5aa1e71f0ef136f0",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "11- Kubernetes Namespaces.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "e1fb4cadfa48eef0",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "4ef8c2295727d945",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "11- Kubernetes Namespaces.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Hızlı geçişi aç": false,
+      "graph:Grafik görünümünü aç": false,
+      "canvas:Yeni tuval oluşturun": false,
+      "daily-notes:Bugünün Notunu Aç": false,
+      "templates:Şablon ekle": false,
+      "command-palette:Komut paletini aç": false
+    }
+  },
+  "active": "ddc4ce1a7b227575",
+  "lastOpenFiles": [
+    "10- İlk Demo Uygulama.md",
+    "9- Kubernetes Yaml Konfigürasyonu.md",
+    "8- Main Kubectl Komutları.md",
+    "11- Kubernetes Namespaces.md",
+    "0- Main.md"
+  ]
+}

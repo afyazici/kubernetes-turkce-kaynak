@@ -235,3 +235,4 @@ kubectl delete -f nginx-deployment.yml
 ![](images/91.png)
 
 ---
+- [[10- İlk Demo Uygulama]]
