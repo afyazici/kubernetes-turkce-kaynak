@@ -1981,6 +1981,7 @@ komutunu çalıştırabiliriz. Aktif ad alanını değiştirecektir. `kubens` ko
 ## Kubernetes Ingress Explained
 
 ![](images/148.png)
+
 Bu konuda Ingress'in ne olduğundan, nasıl kullanılacağından ve farklı kullanım senaryolarından bahsedeceğiz.
 
 ### External Service vs Ingress
@@ -2039,8 +2040,8 @@ Burada gördüğünüz gibi, external ve internal servisler arasındaki tek fark
 ..
 ..
 spec:
-	rules:
-	- host: myapp.com
+  rules:
+  - host: myapp.com
 ..
 ```
 
