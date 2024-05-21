@@ -18,8 +18,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "6c13fc9d9626c7c5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "12- Kubernetes Ingress Explained.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -69,7 +82,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "35140b4ab585908c",
@@ -85,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "11- Kubernetes Namespaces.md",
+                "file": "12- Kubernetes Ingress Explained.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +116,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "11- Kubernetes Namespaces.md",
+                "file": "12- Kubernetes Ingress Explained.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +139,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "11- Kubernetes Namespaces.md"
+                "file": "12- Kubernetes Ingress Explained.md"
               }
             }
           }
@@ -146,12 +160,24 @@
       "command-palette:Komut paletini aç": false
     }
   },
-  "active": "ddc4ce1a7b227575",
+  "active": "6c13fc9d9626c7c5",
   "lastOpenFiles": [
+    "images/164.png",
+    "images/Screenshot from 2024-05-21 14-42-52.png",
+    "11- Kubernetes Namespaces.md",
+    "12- Kubernetes Ingress Explained.md",
+    "images/170.png",
+    "images/169.png",
+    "images/168.png",
+    "images/167.png",
+    "images/166.png",
+    "images/165.png",
+    "images/163.png",
+    "images/162.png",
+    "images/161.png",
     "10- İlk Demo Uygulama.md",
     "9- Kubernetes Yaml Konfigürasyonu.md",
     "8- Main Kubectl Komutları.md",
-    "11- Kubernetes Namespaces.md",
     "0- Main.md"
   ]
 }
