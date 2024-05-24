@@ -398,3 +398,8 @@ a:hover, a:active {
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.navlink_icon img {
+    max-width: 30px; /* Maksimum genişliği belirleyin */
+    height: auto; /* Yüksekliği otomatik olarak ayarlayın */
+}
