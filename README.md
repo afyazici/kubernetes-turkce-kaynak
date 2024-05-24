@@ -8,7 +8,10 @@
 
 ![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white) ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white) ![Obsidian](https://img.shields.io/badge/Obsidian-483699?style=for-the-badge&logo=Obsidian&logoColor=white)
 [![pages-build-deployment](https://github.com/afyazici/kubernetes-turkce-kaynak/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/afyazici/kubernetes-turkce-kaynak/actions/workflows/pages/pages-build-deployment)
-* TechWorld Nina kanalına ait olan 4 saatlik "Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours]" videosunu döküman formatında Türkçeye çeviriyorum. İngilizce konusunda sıkıntı yaşayanlar için faydalı bir *full tutorial* olacağına inanıyorum.
+
+TechWorld Nina kanalına ait olan 4 saatlik "Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours]" videosunu döküman formatında Türkçeye çeviriyorum. İngilizce konusunda sıkıntı yaşayanlar için faydalı bir *full tutorial* olacağına inanıyorum.
+
+* Github Pages linki **https://afyazici.github.io/kubernetes-turkce-kaynak**
 
 * **Video linki aşağıda yer almaktadır**.
 [![Teşekkürler](images/nina.jpg)](https://www.youtube.com/watch?v=X48VuDVv0do&t=2949s)
