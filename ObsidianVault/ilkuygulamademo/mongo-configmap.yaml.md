@@ -1,8 +1,0 @@
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mongodb-configmap
-data:
-  database_url: mongodb-service
-```
