@@ -11,8 +11,12 @@
             "id": "cb1d0dd8f3857e55",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "6- Minikube ve Kubectl Kurulumu.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -65,8 +69,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "35140b4ab585908c",
@@ -82,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "6- Minikube ve Kubectl Kurulumu.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -98,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "6- Minikube ve Kubectl Kurulumu.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -119,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "6- Minikube ve Kubectl Kurulumu.md"
+              }
             }
           }
         ]
@@ -141,6 +148,12 @@
   },
   "active": "cb1d0dd8f3857e55",
   "lastOpenFiles": [
+    "5- Cluster Yapısı.md",
+    "4- Kubernetes Mimarisi.md",
+    "3- Kubernetes Componentleri.md",
+    "2- Kubernetes Avantajları.md",
+    "1- Kubernetes Nedir?.md",
+    "0- Main.md",
     "11- Kubernetes Namespaces.md",
     "12- Kubernetes Ingress Explained.md",
     "images/164.png",
@@ -155,7 +168,6 @@
     "images/162.png",
     "10- İlk Demo Uygulama.md",
     "9- Kubernetes Yaml Konfigürasyonu.md",
-    "8- Main Kubectl Komutları.md",
-    "0- Main.md"
+    "8- Main Kubectl Komutları.md"
   ]
 }
