@@ -53,22 +53,6 @@ body.dark {
   height: 35px;
   border-radius: 50%;
 }
-.search_bar {
-  height: 47px;
-  max-width: 430px;
-  width: 100%;
-}
-.search_bar input {
-  height: 100%;
-  width: 100%;
-  border-radius: 25px;
-  font-size: 18px;
-  outline: none;
-  background-color: var(--white-color);
-  color: var(--grey-color);
-  border: 1px solid var(--grey-color-light);
-  padding: 0 20px;
-}
 .navbar_content {
   display: flex;
   align-items: center;
@@ -254,18 +238,64 @@ body.dark {
 }
 
 .content {
-  margin-top: 60px; /* Adjust this margin according to your navbar height */
+  margin-top: 60px; /* Navbar yüksekliğinize göre ayarlayın */
   padding: 20px;
-  background-color: #306ee712; /* Adjust background color as needed */
-  box-shadow: 0 0 2px var(--grey-color-light); /* Optional: Add shadow for aesthetics */
+  background-color: #306ee712; /* Arka plan rengini isteğinize göre ayarlayın */
+  box-shadow: 0 0 2px var(--grey-color-light); /* Görsellik için gölge ekleme (isteğe bağlı) */
   position: absolute;
   top: 35px;
-  left: 365px; /* Adjust according to your sidebar width */
+  left: 365px; /* Sidebar genişliğine göre ayarlayın */
   right: 31px;
   bottom: 26px;
   overflow-y: auto;
   z-index: 1;
+  max-width: calc(100% - 396px); /* Ekran genişliğinden sidebar ve padding çıkardık */
 }
+
+@media (max-width: 768px) {
+    .content {
+        position: absolute;
+        top: 68px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 20px;
+        overflow-y: auto;
+        max-width: none;
+    }
+
+    .content p {
+      font-size: 16px;
+    }
+
+    .content li {
+      font-size: 16px;
+    }
+
+    .content window {
+      background-color: #1E1E1E;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      width: max-content;
+      overflow: hidden;
+      color: #D4D4D4;
+}
+
+    .image-container {
+        text-align: center; /* Resmi ortalamak için */
+    }
+
+    .content img {
+        max-width: 100%; /* Resmin maksimum genişliğini ayarlayın */
+        height: auto; /* Orantılı olarak yükseklik ayarlaması yapın */
+        display: block; /* Resmin blok seviyesinde görünmesini sağlayın */
+        margin-left: auto; /* Sağa hizalama */
+        margin-right: auto; /* Sola hizalama */
+    }
+}
+
+
 
 /* Optional: Define styles for paragraph content */
 .content p {
@@ -281,7 +311,7 @@ body.dark {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     width: max-content; /* Değişiklik burada */
-    min-width: 506px;
+    min-width: 333px;
     overflow: hidden;
     color: #D4D4D4;
 }
@@ -351,8 +381,7 @@ a:link, a:visited {
 a:hover, a:active {
   color: blue; /* or any color you prefer for hover and active states */
 }
-img {
-  max-width: 1000px;
+.content img {
   max-height: auto; /* Bu, orijinal en-boy oranını korur */
 }
 
