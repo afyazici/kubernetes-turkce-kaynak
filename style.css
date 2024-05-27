@@ -304,7 +304,28 @@ body.dark {
   color: var(--grey-color);
 }
 
+.content li {
+  font-size: 18px;
+  line-height: 2.5;
+  color: var(--grey-color);
+}
 
+.content h1 {
+  font-size: 32px;
+  line-height: 2.5;
+  color: var(--grey-color);
+}
+
+.content h2 {
+  font-size: 24px;
+  line-height: 1;
+  color: var(--grey-color);
+}
+
+.content h3 {
+  font-size: 18px;
+  color: var(--grey-color);
+}
 
 .window {
     background-color: #1E1E1E;
@@ -366,8 +387,8 @@ pre {
 }
 
 code {
-    font-size: 14px;
-    color: black;
+    font-size: 17px;
+    color: #7a7aff;
 }
 
 /* CSS to remove underline from links */
