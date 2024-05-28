@@ -208,6 +208,17 @@
             <li><a href="#tls-certificate-konfigürasyonu" class="nav_link sublink">g) TLS Certificate Konfigürasyonu</a></li>
           </ul>
         </li>
+
+
+
+        <li class="item">
+          <a href="#kubernetes-ingress-explained" class="nav_link submenu_item">
+            <span class="navlink_icon">
+              <img src="images/helm.png" alt="Logo">
+            </span>
+            <span class="navlink">13) Helm Package Manager</span>
+            <i class="bx bx-chevron-right arrow-left"></i>
+          </a>
         <!-- end -->
       </ul>
 
@@ -2578,9 +2589,11 @@ c3ng0@ubn:~$ kubectl apply -f dashboard-ingress.yaml Error from server <br>
     </ul>
     <p>Önceki konulardan hatırlarsanız, <code>type</code> belirtiyorduk. Kubernetes’te TLS adında belirli bir secret türü, TLS secret’ı oluştururken bu türü kullanmamız gerekiyor.</p>
     <p>Burada tutulması gereken üç küçük not var: * Birincisi, bu verilerin anahtarlarının tam olarak bu şekilde adlandırılması gerektiğidir. <code>tls.crt</code>, <code>tls.key</code>. * İkincisi, bu değerler, sertifika veya anahtar içeriklerinin kendisidir, dosya yolu veya konumu değil, bu nedenle tüm içeriği buraya base64 kodlamamız gerekiyor. * Üçüncüsü, secret’ı, Ingress bileşeniyle aynı <code>namespace</code> ile oluşturmamız gerekiyor. Aksi takdirde, farklı bir namespace’teki bir secret’a referans veremeyiz.</p>
+    <br>
 
-
-
+    <h2 id="kubernetes-ingress-explained">Kubernetes Ingress Explained</h2>
+    <br>
+    <p><img src="images/174.png" /></p>
 
 
   </div>

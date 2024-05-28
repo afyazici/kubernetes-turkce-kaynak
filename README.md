@@ -78,6 +78,8 @@ TechWorld Nina kanalına ait olan 4 saatlik "Kubernetes Tutorial for Beginners [
   - [Ingress Default Backend](#ingress-default-backend)
   - [Multiple Paths for Same Host](#multiple-paths-for-same-host)
   - [TLS Certificate Konfigürasyonu](#tls-certificate-konfigürasyonu)
+- [13- Helm Package Manager](#helm-package-manager)
+
 
 
 ---
@@ -2283,3 +2285,8 @@ Burada tutulması gereken üç küçük not var:
 * Birincisi, bu verilerin anahtarlarının tam olarak bu şekilde adlandırılması gerektiğidir. `tls.crt`, `tls.key`.
 * İkincisi, bu değerler, sertifika veya anahtar içeriklerinin kendisidir, dosya yolu veya konumu değil, bu nedenle tüm içeriği buraya base64 kodlamamız gerekiyor.
 * Üçüncüsü, secret'ı, Ingress bileşeniyle aynı `namespace` ile oluşturmamız gerekiyor. Aksi takdirde, farklı bir namespace'teki bir secret'a referans veremeyiz.
+
+
+## 13- Helm Package Manager
+
+![](images/174.png)
