@@ -76,6 +76,9 @@ TechWorld Nina kanalına ait olan 4 saatlik "Kubernetes Tutorial for Beginners [
   - [Ingress Controller](#ingress-controller)
   - [Minikube Ingress Konfigürasyonu](#minikube-ingress-konfigürasyonu)
   - [Ingress Default Backend](#ingress-default-backend)
+  - [Multiple Paths for Same Host](#multiple-paths-for-same-host)
+  - [TLS Certificate Konfigürasyonu](#tls-certificate-konfigürasyonu)
+
 
 ---
 
