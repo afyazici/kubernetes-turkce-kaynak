@@ -2287,6 +2287,6 @@ Burada tutulması gereken üç küçük not var:
 * Üçüncüsü, secret'ı, Ingress bileşeniyle aynı `namespace` ile oluşturmamız gerekiyor. Aksi takdirde, farklı bir namespace'teki bir secret'a referans veremeyiz.
 
 
-## 13- Helm Package Manager
+## Helm Package Manager
 
 ![](images/174.png)
