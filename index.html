@@ -2533,7 +2533,8 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
     </div>
     <div class="window-content">
         <pre><code class="language-shell">
-c3ng0@ubn:~$ kubectl apply -f dashboard-ingress.yaml Error from server (InternalError): error when creating "dashboard-ingress.yaml": Internal error occurred:<br> failed calling webhook "validate.nginx.ingress.kubernetes.io": failed to call webhook: Post
+c3ng0@ubn:~$ kubectl apply -f dashboard-ingress.yaml Error from server <br>
+(InternalError): error when creating "dashboard-ingress.yaml": Internal error occurred:<br> failed calling webhook "validate.nginx.ingress.kubernetes.io": failed to call webhook: Post
 "https://ingress-nginx-controller-admission.ingress-nginx.svc:443/networking/v1/ingresses?timeout=10s": service "ingress-nginx-controller-admission" not found
         </code></pre>
     </div>
