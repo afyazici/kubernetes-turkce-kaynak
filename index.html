@@ -2569,6 +2569,26 @@ c3ng0@ubn:~$ kubectl apply -f dashboard-ingress.yaml Error from server (Internal
     <p>Örneğin, konfigüre etmediğimiz bir adrese istek gönderirsek, sadece “sayfa bulunamadı” mesajını alırız.</p>
     <p><img src="images/170.png" /></p>
     <p>Bu, sayfa bulunamadığında özel hata mesajları tanımlamak veya gelen ve uygulamanızın işleyemeyeceği istekler geldiğinde kullanıcıların anlamlı bir hata mesajı veya özel bir sayfa görmesini sağlamak için kullanılabilir; böylece kullanıcıları ana sayfamıza yönlendirebiliriz.</p>
+    <p><strong>Özetle</strong> Şimdiye kadar Ingress’in ne olduğunu ve nasıl kullanabileceğimizi gördük. Ayrıca Minikube’da bir Ingress kuralının nasıl oluşturulacağına dair bir demo da yaptık, ancak sadece çok temel bir Ingress yaml konfigürasyonu kullandık; sadece bir path ile bir internal servise basit bir yönlendirme yaptık. Ancak Ingress configuration ile sadece temel yönlendirmeden çok daha fazlasını yapabiliriz.</p>
+    <h3 id="multiple-paths-for-same-host">Multiple paths for Same Host</h3>
+    <p>Şu use case’i düşünelim: Google bir domaine sahip ama birden fazla hizmet sunmaktadır. Örneğin, bir Google hesabımız varsa, Google Analytics’i kullanabiliriz, alışveriş yapabiliriz, bir takvime sahip olabiliriz, Gmail’e sahip olabiliriz vb.. Tüm bunlar, aynı domaine erişilebilen farklı uygulamalardır. Buna benzer bir uygulamamız olduğunu düşünelim; aynı ekosistemin bir parçası olan iki ayrı uygulama sunuyoruz. Ancak bunları ayrı URL’lerde tutmak istiyoruz.</p>
+    <ul>
+    <li>Yapabileceğimiz şey, “rule” içinde Hostu tanımlamaktır: <code>myapp.com</code>. Path bölümünde birden fazla yol tanımlayabiliriz. Kullanıcı, analytics uygulamamıza erişmek isterse, myapp.com/analytics adresini girmesi gerekecek ve bu, isteği pod içindeki internal analytics servise yönlendirecektir. Veya alışveriş uygulamasına erişmek isterse, URL myapp.com/shopping olacaktır. Bu şekilde, tek bir Host ve bir Ingress ile, birden fazla uygulamaya yönlendirme yapabiliriz.</li>
+    </ul>
+    <p><img src="images/171.png" /></p>
+    <p>Başka bir use case ise, bazı şirketlerin farklı uygulamaları erişilebilir kılmak için URL’leri kullanmak yerine sub-domains kullanmasıdır. Yani, myapp.com/analytics yerine, bir sub-domain oluştururlar: analytics.myapp.com. Uygulamamız bu şekilde yapılandırılmışsa, şu şekilde görünecektir:</p>
+    <p><img src="images/172.png" /></p>
+    <p>önceki örnekteki gibi tek bir host ve birden fazla path yerine, burada birden fazla host olur ve her host bir subdomaini temsil eder.</p>
+    <h3 id="tls-certificate-konfigürasyonu">TLS Certificate Konfigürasyonu</h3>
+    <p>Bu başlıkta ele alacağımız son konu, TLS sertifikası yapılandırmasıdır. Şimdiye kadar sadece HTTP istekleri için Ingress yapılandırması gördük, ancak Ingress’te HTTPS yönlendirmeyi yapılandırmak da çok kolaydır. Yapmamız gereken tek şey, <code>rules</code> bölümünün üstüne TLS adında bir özellik tanımlamak, host değeri, aynı hostu <code>myapp.com</code> ve bir TLS sertifikasını içeren oluşturduğumuz secret’ın adını belirtmektir. Ingress ve Secret konfigürasyonu şu şekilde olacaktır:</p>
+    <p><img src="images/173.png" /></p>
+    <ul>
+    <li><code>name</code> bir referanstır.</li>
+    <li><code>data</code> TLS sertifikası ve TLS anahtarını içerir.</li>
+    </ul>
+    <p>Önceki konulardan hatırlarsanız, <code>type</code> belirtiyorduk. Kubernetes’te TLS adında belirli bir secret türü, TLS secret’ı oluştururken bu türü kullanmamız gerekiyor.</p>
+    <p>Burada tutulması gereken üç küçük not var: * Birincisi, bu verilerin anahtarlarının tam olarak bu şekilde adlandırılması gerektiğidir. <code>tls.crt</code>, <code>tls.key</code>. * İkincisi, bu değerler, sertifika veya anahtar içeriklerinin kendisidir, dosya yolu veya konumu değil, bu nedenle tüm içeriği buraya base64 kodlamamız gerekiyor. * Üçüncüsü, secret’ı, Ingress bileşeniyle aynı <code>namespace</code> ile oluşturmamız gerekiyor. Aksi takdirde, farklı bir namespace’teki bir secret’a referans veremeyiz.</p>
+
 
 
 

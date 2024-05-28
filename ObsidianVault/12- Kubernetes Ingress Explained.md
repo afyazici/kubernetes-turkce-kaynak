@@ -13,7 +13,7 @@ Ancak, bu yöntem test durumları ve hızlı bir şeyler denemek için uygundur,
 
 #### External Service YAML Config
 
-Şimdi, external service yapılandırmasının nasıl göründüğüne bir göz atalım. 
+Şimdi, external service yapılandırmasının nasıl göründüğüne bir göz atalım.
 
 ![](images/151.png)
 
@@ -22,20 +22,20 @@ Servisin `loadBalancer` türünde olduğunu görürüz. Bu, servise bir `externa
 
 #### Ingress YAML Config
 
-Ingress ile bu konfigürasyon farklıdır. Ingress'in syntax'ına bakalım. 
+Ingress ile bu konfigürasyon farklıdır. Ingress'in syntax'ına bakalım.
 
 ![](images/152.png)
 
-* `kind: Ingress` ile Ingress olduğunu belirtiriz. 
+* `kind: Ingress` ile Ingress olduğunu belirtiriz.
 * `spec` tüm yapılandırmanın olduğu yerdir.
-	* `rules`  veya routing rules aracılığıyla yapılır. Bu tanımlanan rules, belirli bir hosta yapılan tüm isteklerin internal servise yönlendirilmesini tanımlar. *(Yukarıda net bir şekilde gösterilmiştir.)* Kullanıcı tarayıcıda bu hostun adresini girer ve Ingress, bu istekleri internal servise yönlendirir. 
+	* `rules`  veya routing rules aracılığıyla yapılır. Bu tanımlanan rules, belirli bir hosta yapılan tüm isteklerin internal servise yönlendirilmesini tanımlar. *(Yukarıda net bir şekilde gösterilmiştir.)* Kullanıcı tarayıcıda bu hostun adresini girer ve Ingress, bu istekleri internal servise yönlendirir.
 	*  `paths` ise alan adından sonraki URL yolunu ifade eder. Domain name'den sonra gelen herşeyi paths içerisinde tanımlarız. ![](images/153.png)
 
 Şu anda yapılandırmada HTTPS bağlantısı için herhangi bir şey ayarlanmamıştır, sadece HTTP protokolü kullanılıyor. Ingress componentini kullanarak HTTPS yapılandırmasının nasıl yapılacağını az sonra göreceğiz.
 
 > [!NOTE]
 > Config içerisindeki `http`, URL adresindeki HTTP veya HTTPS'i ifade etmiyor.
-> Bu, gelen isteğin internal servise yönlendirildiği protokoldür. 
+> Bu, gelen isteğin internal servise yönlendirildiği protokoldür.
 > 	1. Adım: tarayıcıdan Ingress'e istek gönderilmesilidir
 > 	Config içerisindeki `http` ise ikinci adımdır. Gelen isteğin internal servise yönlendirildiği protokoldür. Bunu birinci adımla karıştırmamak gerekir.
 > ![](images/154.png)
@@ -43,15 +43,15 @@ Ingress ile bu konfigürasyon farklıdır. Ingress'in syntax'ına bakalım.
 
 ### Ingress Konfigürasyonu
 
-Ve şimdi, internal servisin bu Ingress'e nasıl görüneceğine bakalım. Temelde, backend, gelen isteğin yönlendirileceği hedeftir ve servisin adı, internal servisin adını karşılamalıdır. 
+Ve şimdi, internal servisin bu Ingress'e nasıl görüneceğine bakalım. Temelde, backend, gelen isteğin yönlendirileceği hedeftir ve servisin adı, internal servisin adını karşılamalıdır.
 
 ![](images/155.png)
 
-Ayrıca port, internal servis portu olmalıdır. 
+Ayrıca port, internal servis portu olmalıdır.
 
 ![](images/156.png)
 
-Burada gördüğünüz gibi, external ve internal servisler arasındaki tek fark, internal serviste node portunun olmamasıdır. Node portu 30000'den başlayan üçüncü port burada yoktur. Ayrıca tipi de bir load balancer değil, cluster IP olan default internal servis tipidir. 
+Burada gördüğünüz gibi, external ve internal servisler arasındaki tek fark, internal serviste node portunun olmamasıdır. Node portu 30000'den başlayan üçüncü port burada yoktur. Ayrıca tipi de bir load balancer değil, cluster IP olan default internal servis tipidir.
 
 ```yaml
 ..
@@ -66,7 +66,7 @@ Bu, geçerli bir domain adresi olmalıdır. Buraya rastgele bir şey yazamayız.
 
 ![](images/157.png)
 
-Şimdi, Kubernetes Ingress componentini gördüğümüze göre, Ingress'i clustera nasıl konfigüre edeceğimize bakalım. Başlangıçta gördüğümüz diyagramı hatırlayalım. 
+Şimdi, Kubernetes Ingress componentini gördüğümüze göre, Ingress'i clustera nasıl konfigüre edeceğimize bakalım. Başlangıçta gördüğümüz diyagramı hatırlayalım.
 
 ![](images/158.png)
 
@@ -80,12 +80,12 @@ Temelde bir pod, servis ve buna karşılık gelen Ingress var. Ancak, yalnızca 
 
 ### Ingress Controller
 
-Ingress denetleyicisi tam olarak nedir? Ingress controller'ın işlevi, clusterda tanımladığımız tüm kuralları(rules) değerlendirmek ve bu şekilde tüm yönlendirmeleri yönetmektir. 
+Ingress denetleyicisi tam olarak nedir? Ingress controller'ın işlevi, clusterda tanımladığımız tüm kuralları(rules) değerlendirmek ve bu şekilde tüm yönlendirmeleri yönetmektir.
 
 
 Ingress Controller, yapılandırdığımız domain name veya subdomain name kuralları için clusterda `entry point` olacaktır ve tüm kuralları değerlendirecektir. Clustera 50 kural veya 50 Ingress componenti oluşturmuş olabiliriz; yine de tüm kuralları değerlendirilecektir ve hangi routing rule'un belirli bir istek için geçerli olduğunu belirleyecektir.
 
-Bu Ingress uygulamasını clusterımıza kurmak için birçok third party uygulamasından hangisini seçeceğimize karar vermemiz gerekir. 
+Bu Ingress uygulamasını clusterımıza kurmak için birçok third party uygulamasından hangisini seçeceğimize karar vermemiz gerekir.
 
 [Kubernetes Docs - Ingress Controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
 
@@ -95,9 +95,9 @@ Clusterımıza Ingress controller kurduktan sonra, Ingress rules oluşturup tüm
 
 Öncelikle, Kubernetes clusterımızın çalıştığı ortamı düşünmeliyiz. Amazon Web Services, Google Cloud gibi bir cloud service provider kullanıyorsak, bu sağlayıcının sağladığı bir yük loadbalancer kullanabiliriz. Dış istekler önce bu loadbalancer'a ulaşır, ardından Ingress controller'a yönlendirilir. `Cloud Service Provider` kullanmanın avantajı, kendi loadbalancer'ımızı uygulamak zorunda olmamamızdır. Bu, loadbalancer işlemini ve dış isteklerin yönlendirilmesini daha kolay hale getirir. Ancak, bulut ortamında bile farklı yollarla yapılandırma yapabiliriz, fakat bu yöntem en yaygın stratejilerden biridir.
 
-Şimdi, Kubernetes clusterımızı `bare metal` bir ortamda dağıtıyorsak, bu kısmı kendimiz yapmamız gerekecek. 
+Şimdi, Kubernetes clusterımızı `bare metal` bir ortamda dağıtıyorsak, bu kısmı kendimiz yapmamız gerekecek.
 
-Kubernetes clusterımıza bir entry point yapılandırmamız gerekecektir ve bunu yapmanın birçok farklı yolu vardır. Cluster içinde veya dışında ayrı bir sunucu olarak bir entry point sağlamamız gerekecektir. 
+Kubernetes clusterımıza bir entry point yapılandırmamız gerekecektir ve bunu yapmanın birçok farklı yolu vardır. Cluster içinde veya dışında ayrı bir sunucu olarak bir entry point sağlamamız gerekecektir.
 
 * Bu entry point, yazılım veya donanım çözümü olabilecek harici bir proxy sunucusu olabilir ve clustera entry point olarak loadbalancer rolünü üstlenir.
 
@@ -107,13 +107,13 @@ Kubernetes clusterımıza bir entry point yapılandırmamız gerekecektir ve bun
 
 ![](images/162.png)
 
-Söylediğimiz gibi farklı ortam ve yaklaşımlara bağlı olarak bunu yapılandırmanın ve ayarlamanın farklı yolları vardır, ancak clusterın nasıl çalıştığını anlamak önemlidir. 
+Söylediğimiz gibi farklı ortam ve yaklaşımlara bağlı olarak bunu yapılandırmanın ve ayarlamanın farklı yolları vardır, ancak clusterın nasıl çalıştığını anlamak önemlidir.
 
 ### Minikube Ingress Konfigürasyonu
 
 ![](images/163.png)
 
-Biz tüm bunları dizüstü bilgisayarımızda Minikube kullanarak yapacağımız için kurulum oldukça basit olacak ve bu, cluster ayarlarımıza tam olarak uygulanmasa bile, tüm bu şeylerin pratikte nasıl çalıştığını görmüş olacağız. İlk olarak, Minikube'da Ingress controller'ı kurmak gerekiyor ve bunu yapmak için şu komutu çalıştırabiliriz: 
+Biz tüm bunları dizüstü bilgisayarımızda Minikube kullanarak yapacağımız için kurulum oldukça basit olacak ve bu, cluster ayarlarımıza tam olarak uygulanmasa bile, tüm bu şeylerin pratikte nasıl çalıştığını görmüş olacağız. İlk olarak, Minikube'da Ingress controller'ı kurmak gerekiyor ve bunu yapmak için şu komutu çalıştırabiliriz:
 
 ```bash
 minikube addons enable ingress
@@ -129,7 +129,7 @@ komutunu çalıştırarak Ingress controller pod'unun çalıştığını görebi
 
 ![](images/164.png)
 
-Ingress controller kurulduktan sonra, Ingress controller'ın kullanacağı bir Ingress kuralı oluşturabiliriz. 
+Ingress controller kurulduktan sonra, Ingress controller'ın kullanacağı bir Ingress kuralı oluşturabiliriz.
 
 >[!TIP]
 >Eğer `kubernetes-dashboard` componenti yoksa şu komutla indirebilirsiniz
@@ -145,7 +145,7 @@ Ingress controller kurulduktan sonra, Ingress controller'ın kullanacağı bir I
 kubectl get all -n kubernetes-dashboard
 ```
 
-Bu komut kubernetes-dashboard'daki tüm componentleri gösterir. 
+Bu komut kubernetes-dashboard'daki tüm componentleri gösterir.
 
 ![](images/165.png)
 ```bash
@@ -165,9 +165,9 @@ spec:
   rules:
 ```
 
-Bunlar sadece metadata. 
+Bunlar sadece metadata.
 * `name:` `dashboard-ingress` olacak.,
-* `namespace:` hizmetin ve pod'un olduğu aynı namespace olacak. 
+* `namespace:` hizmetin ve pod'un olduğu aynı namespace olacak.
 * `spec:` içerisinde kuralları tanımlayacağız.
 
 ```yaml
@@ -186,11 +186,11 @@ spec:
           servicePort: 80
 ```
 
-* İlk kuralımız, `host:` olacak. `dashboard.com` olarak tanımladık. 
-* `http` forwarding, internal servise yapılacak. 
+* İlk kuralımız, `host:` olacak. `dashboard.com` olarak tanımladık.
+* `http` forwarding, internal servise yapılacak.
 * `paths:`' i (all path) olarak bıraktık.
-* `backend:`, servisin backend'i olacak. 
-* `servicename`, az önceki çıktıda gördüğümüz servis adı. 
+* `backend:`, servisin backend'i olacak.
+* `servicename`, az önceki çıktıda gördüğümüz servis adı.
 * `servicePort:` ise servisin dinlediği port. Bunu da az önce paylaştığım çıktıda görüyoruz. `80/TCP`
 
 Bu, Ingress konfigürasyonumuz olacak ve dashboard.com'a yönlendirilen her isteği, internal `kubernetes-dashboard` servisine yönlendirecek. Internal Servis olduğunu biliyoruz çünkü türü `ClusterIP`, yani External IP adresi yok.
@@ -200,7 +200,7 @@ NAME                                TYPE        CLUSTER-IP       EXTERNAL-IP   P
 service/kubernetes-dashboard        ClusterIP   10.101.218.170   <none>        80/TCP     82m
 ```
 
-Bu arada`dashboard.com` hostnamei uydurduk, hiçbir yere kaydedilmedi ve ayrıca bu hostname'in hangi IP adresine çözülmesi gerektiğini hiçbir yere yapılandırmadık. Bu, her zaman yapılandırmamız gereken bir şeydir. 
+Bu arada`dashboard.com` hostnamei uydurduk, hiçbir yere kaydedilmedi ve ayrıca bu hostname'in hangi IP adresine çözülmesi gerektiğini hiçbir yere yapılandırmadık. Bu, her zaman yapılandırmamız gereken bir şeydir.
 
 Şimdi bu Ingress rule'u apply edelim.
 
@@ -216,7 +216,7 @@ error when creating "dashboard-ingress.yaml": Internal error occurred: failed ca
 webhook "validate.nginx.ingress.kubernetes.io": failed to call webhook: Post "https://ingress-nginx-controller-admission.ingress-nginx.svc:443/networking/v1/ingresses?timeout=10s": service "ingress-nginx-controller-admission" not found
 >```
 > Yapmanız gereken şey şu komutu kullanmaktır. Gereken `ingress-nginx-controller` indirilecek.
-> 
+>
 >```bash
 >kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud/deploy.yaml
 >```
@@ -233,7 +233,7 @@ webhook "validate.nginx.ingress.kubernetes.io": failed to call webhook: Post "ht
 
 Ingress oluşturuldu. Namespace'te Ingress'i görmeliyiz. Adresin boş olduğunu görebiliriz çünkü Ingress'e adres ataması biraz zaman alır. Bu hostname'e eşlenecek IP adresini almak için beklememiz gerekecek.
 
-Adresi aldıktan sonra bu adresi aşağıdaki şekilde hosts dosyamızda tanımlıyoruz. 
+Adresi aldıktan sonra bu adresi aşağıdaki şekilde hosts dosyamızda tanımlıyoruz.
 
 ![](images/167.png)
 
@@ -245,17 +245,50 @@ Bu yerel olarak çalışır, tarayıcıda dashboard.com yazarsak, bu IP adresine
 
 ### Ingress Default Backend
 
-Ingress ayrıca `default backend` adlı bir şeye sahiptir, bu nedenle `kubectl describe Ingress` komutunu kullanarak Ingress'in adını ve namespace'ini belirttiğinizde şu çıktıyı elde edersiniz. 
+Ingress ayrıca `default backend` adlı bir şeye sahiptir, bu nedenle `kubectl describe Ingress` komutunu kullanarak Ingress'in adını ve namespace'ini belirttiğinizde şu çıktıyı elde edersiniz.
 
 ```bash
 kubectl describe ingress dashboard-ingress -n kubernetes-dashboard
 ```
 ![](images/169.png)
 
-Burada, 80 numaralı `default-http-backend` portuna eşlenen bir `default backend` attribute'u vardır. Bu, Kubernetes clusterına gelen ve herhangi bir backend'e eşlenmeyen istekleri ele alır, yani bu isteği bir servise eşlemek için herhangi bir kural bulunmayan bir istek olduğunda, bu `default backend`'in bu isteği işleyeceği anlamına gelir. Bu servisi clusterımız içinde oluşturup tanımlamazsak, Kubernetes bu servise yönlendirmeye çalışacak, bulamayacak ve bir varsayılan hata yanıtı alacağız. 
+Burada, 80 numaralı `default-http-backend` portuna eşlenen bir `default backend` attribute'u vardır. Bu, Kubernetes clusterına gelen ve herhangi bir backend'e eşlenmeyen istekleri ele alır, yani bu isteği bir servise eşlemek için herhangi bir kural bulunmayan bir istek olduğunda, bu `default backend`'in bu isteği işleyeceği anlamına gelir. Bu servisi clusterımız içinde oluşturup tanımlamazsak, Kubernetes bu servise yönlendirmeye çalışacak, bulamayacak ve bir varsayılan hata yanıtı alacağız.
 
-Örneğin, konfigüre etmediğimiz bir adrese istek gönderirsek, sadece "sayfa bulunamadı" mesajını alırız. 
+Örneğin, konfigüre etmediğimiz bir adrese istek gönderirsek, sadece "sayfa bulunamadı" mesajını alırız.
 
 ![](images/170.png)
 
-Bu, sayfa bulunamadığında özel hata mesajları tanımlamak veya gelen ve uygulamanızın işleyemeyeceği istekler geldiğinde kullanıcıların anlamlı bir hata mesajı veya özel bir sayfa görmesini sağlamak için kullanılabilir; böylece kullanıcıları ana sayfamıza yönlendirebiliriz. 
+Bu, sayfa bulunamadığında özel hata mesajları tanımlamak veya gelen ve uygulamanızın işleyemeyeceği istekler geldiğinde kullanıcıların anlamlı bir hata mesajı veya özel bir sayfa görmesini sağlamak için kullanılabilir; böylece kullanıcıları ana sayfamıza yönlendirebiliriz.
+
+**Özetle**
+Şimdiye kadar Ingress'in ne olduğunu ve nasıl kullanabileceğimizi gördük. Ayrıca Minikube'da bir Ingress kuralının nasıl oluşturulacağına dair bir demo da yaptık, ancak sadece çok temel bir Ingress yaml konfigürasyonu kullandık; sadece bir path ile bir internal servise basit bir yönlendirme yaptık. Ancak Ingress configuration ile sadece temel yönlendirmeden çok daha fazlasını yapabiliriz.
+### Multiple paths for Same Host
+
+Şu use case'i düşünelim: Google bir domaine sahip ama birden fazla hizmet sunmaktadır. Örneğin, bir Google hesabımız varsa, Google Analytics'i kullanabiliriz, alışveriş yapabiliriz, bir takvime sahip olabiliriz, Gmail'e sahip olabiliriz vb..
+Tüm bunlar, aynı domaine erişilebilen farklı uygulamalardır. Buna benzer bir uygulamamız olduğunu düşünelim; aynı ekosistemin bir parçası olan iki ayrı uygulama sunuyoruz. Ancak bunları ayrı URL'lerde tutmak istiyoruz.
+
+* Yapabileceğimiz şey, "rule" içinde Hostu tanımlamaktır: `myapp.com`. Path bölümünde birden fazla yol tanımlayabiliriz. Kullanıcı, analytics uygulamamıza erişmek isterse, myapp.com/analytics adresini girmesi gerekecek ve bu, isteği pod içindeki internal analytics servise yönlendirecektir. Veya alışveriş uygulamasına erişmek isterse, URL myapp.com/shopping olacaktır. Bu şekilde, tek bir Host ve bir Ingress ile, birden fazla uygulamaya yönlendirme yapabiliriz.
+
+![](images/171.png)
+
+Başka bir use case ise, bazı şirketlerin farklı uygulamaları erişilebilir kılmak için URL'leri kullanmak yerine sub-domains kullanmasıdır. Yani, myapp.com/analytics yerine, bir sub-domain oluştururlar: analytics.myapp.com. Uygulamamız bu şekilde yapılandırılmışsa, şu şekilde görünecektir:
+
+![](images/172.png)
+
+önceki örnekteki gibi tek bir host ve birden fazla path yerine, burada birden fazla host olur ve her host bir subdomaini temsil eder.
+
+### TLS Certificate Konfigürasyonu
+
+Bu başlıkta ele alacağımız son konu, TLS sertifikası yapılandırmasıdır. Şimdiye kadar sadece HTTP istekleri için Ingress yapılandırması gördük, ancak Ingress'te HTTPS yönlendirmeyi yapılandırmak da çok kolaydır. Yapmamız gereken tek şey, `rules` bölümünün üstüne TLS adında bir özellik tanımlamak, host değeri, aynı hostu `myapp.com` ve bir TLS sertifikasını içeren oluşturduğumuz secret'ın adını belirtmektir. Ingress ve Secret konfigürasyonu şu şekilde olacaktır:
+
+![](images/173.png)
+
+* `name` bir referanstır.
+* `data` TLS sertifikası ve TLS anahtarını içerir.
+
+Önceki konulardan hatırlarsanız, `type` belirtiyorduk. Kubernetes'te TLS adında belirli bir secret türü, TLS secret'ı oluştururken bu türü kullanmamız gerekiyor.
+
+Burada tutulması gereken üç küçük not var:
+* Birincisi, bu verilerin anahtarlarının tam olarak bu şekilde adlandırılması gerektiğidir. `tls.crt`, `tls.key`.
+* İkincisi, bu değerler, sertifika veya anahtar içeriklerinin kendisidir, dosya yolu veya konumu değil, bu nedenle tüm içeriği buraya base64 kodlamamız gerekiyor.
+* Üçüncüsü, secret'ı, Ingress bileşeniyle aynı `namespace` ile oluşturmamız gerekiyor. Aksi takdirde, farklı bir namespace'teki bir secret'a referans veremeyiz.
