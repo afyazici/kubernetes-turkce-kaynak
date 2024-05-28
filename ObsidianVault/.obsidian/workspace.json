@@ -18,8 +18,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "091c917ba3a324e7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "13- Helm Package Manager.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -85,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "12- Kubernetes Ingress Explained.md",
+                "file": "13- Helm Package Manager.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "12- Kubernetes Ingress Explained.md",
+                "file": "13- Helm Package Manager.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "12- Kubernetes Ingress Explained.md"
+                "file": "13- Helm Package Manager.md"
               }
             }
           }
@@ -146,8 +159,11 @@
       "command-palette:Komut paletini aç": false
     }
   },
-  "active": "cb1d0dd8f3857e55",
+  "active": "091c917ba3a324e7",
   "lastOpenFiles": [
+    "images/174.png",
+    "12- Kubernetes Ingress Explained.md",
+    "13- Helm Package Manager.md",
     "6- Minikube ve Kubectl Kurulumu.md",
     "5- Cluster Yapısı.md",
     "4- Kubernetes Mimarisi.md",
@@ -156,7 +172,6 @@
     "1- Kubernetes Nedir?.md",
     "0- Main.md",
     "11- Kubernetes Namespaces.md",
-    "12- Kubernetes Ingress Explained.md",
     "images/164.png",
     "images/Screenshot from 2024-05-21 14-42-52.png",
     "images/170.png",
