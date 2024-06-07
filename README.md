@@ -2389,7 +2389,7 @@ Values.yaml'daki değerlerin Helm şablonlarına nasıl enjekte edildiğini daha
 
 ![](images/185.png)
 
-**Burada tanımlanan varsayılan değerler, farklı şekillerde geçersiz kılınabilir. **
+**Burada tanımlanan varsayılan değerler, farklı şekillerde geçersiz kılınabilir.**
 * Bir yol, Helm install komutunu çalıştırırken alternatif bir values.yaml dosyası sağlamaktır.
 
 ```bash
